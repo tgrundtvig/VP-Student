@@ -14,11 +14,13 @@ package dk.viprogram.week04;
  * - recordProgress(amount) adds gold collected
  */
 public class CollectGoldObjective implements QuestObjective {
-    
+
     // TODO: Add fields for requiredAmount and currentAmount
-    
-    // TODO: Add constructor(int requiredAmount)
-    
+
+    public CollectGoldObjective(int requiredAmount) {
+        // TODO: Store requiredAmount, initialize currentAmount to 0
+    }
+
     @Override
     public String getDescription() {
         // TODO: Return description showing progress

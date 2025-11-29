@@ -6,6 +6,8 @@ package dk.viprogram.week03;
  * This class implements the ICombatant interface.
  * It MUST provide implementations for all non-default methods.
  *
+ * Warriors are straightforward fighters with consistent attack power.
+ *
  * TODO: Complete the implementation of all required methods
  */
 public class SimpleWarrior implements ICombatant {
@@ -24,35 +26,32 @@ public class SimpleWarrior implements ICombatant {
     @Override
     public int getHealth() {
         // TODO: Return current health
-        return health;
+        return 0;
     }
 
     @Override
     public int getMaxHealth() {
         // TODO: Return maximum health
-        return maxHealth;
+        return 0;
     }
 
     @Override
     public int getAttackPower() {
         // TODO: Return attack power
-        return attackPower;
+        return 0;
     }
 
     @Override
     public void takeDamage(int damage) {
         // TODO: Reduce health by damage amount
         // Make sure health doesn't go below 0
-        health = Math.max(0, health - damage);
     }
 
     @Override
     public void attack(ICombatant target) {
         // TODO: Make this warrior attack the target
         // The warrior should deal its attack power as damage
-        if (this.isAlive() && target.isAlive()) {
-            target.takeDamage(this.attackPower);
-        }
+        // Hint: Only attack if both this warrior and target are alive
     }
 
     // Notice: We get isAlive() and getCombatStatus() for free from the interface!

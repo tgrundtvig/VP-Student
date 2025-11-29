@@ -128,5 +128,4 @@ Before class, ensure you can:
 ## Getting Help
 - Review Week 3 materials on interfaces
 - Check the pre-class reading for examples
-- Ask questions in the class Discord
 - Come to class with specific questions

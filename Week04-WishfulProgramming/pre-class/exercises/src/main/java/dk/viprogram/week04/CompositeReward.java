@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
  * - grantTo() should grant ALL rewards to the player
  */
 public class CompositeReward implements Reward {
-    
+
     // TODO: Add a field for the list of rewards
-    
-    // TODO: Add a constructor that takes Reward... (varargs)
-    
+
+    public CompositeReward(Reward... rewards) {
+        // TODO: Store the rewards in a field (hint: use Arrays.asList())
+    }
+
     @Override
     public String getDescription() {
         // TODO: Combine all reward descriptions with ", "

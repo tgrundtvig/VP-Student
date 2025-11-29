@@ -14,11 +14,13 @@ package dk.viprogram.week04;
  * - recordProgress(1) adds to the kill count
  */
 public class KillCountObjective implements QuestObjective {
-    
+
     // TODO: Add fields for targetName, requiredCount, currentCount
-    
-    // TODO: Add constructor(String targetName, int requiredCount)
-    
+
+    public KillCountObjective(String targetName, int requiredCount) {
+        // TODO: Store targetName and requiredCount, initialize currentCount to 0
+    }
+
     @Override
     public String getDescription() {
         // TODO: Return description showing progress, e.g., "Kill 5 Goblins (2/5)"

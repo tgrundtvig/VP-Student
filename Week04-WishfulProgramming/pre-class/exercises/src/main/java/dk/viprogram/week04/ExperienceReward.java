@@ -11,11 +11,13 @@ package dk.viprogram.week04;
  * - grantTo() should add the experience to the player
  */
 public class ExperienceReward implements Reward {
-    
+
     // TODO: Add a field for the XP amount
-    
-    // TODO: Add a constructor that takes the amount
-    
+
+    public ExperienceReward(int amount) {
+        // TODO: Store the amount in a field
+    }
+
     @Override
     public String getDescription() {
         // TODO: Return a description like "100 XP"

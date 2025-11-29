@@ -21,9 +21,11 @@ import java.util.List;
  */
 public class QuestLog {
 
-    // TODO: Add fields for activeQuests and completedQuests
+    // TODO: Add fields for activeQuests and completedQuests (both List<Quest>)
 
-    // TODO: Add constructor
+    public QuestLog() {
+        // TODO: Initialize both lists as empty ArrayLists
+    }
 
     public void addQuest(Quest quest) {
         // TODO: Add quest to active quests

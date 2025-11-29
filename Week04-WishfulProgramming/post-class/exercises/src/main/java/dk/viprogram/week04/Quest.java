@@ -27,9 +27,11 @@ import java.util.List;
  */
 public class Quest {
 
-    // TODO: Add fields
+    // TODO: Add fields for name, description, objectives (List<QuestObjective>), and reward
 
-    // TODO: Add constructor
+    public Quest(String name, String description, List<QuestObjective> objectives, Reward reward) {
+        // TODO: Store all parameters in fields
+    }
 
     public String getName() {
         // TODO: Implement

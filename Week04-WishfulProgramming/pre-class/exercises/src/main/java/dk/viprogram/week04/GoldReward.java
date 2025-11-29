@@ -11,11 +11,13 @@ package dk.viprogram.week04;
  * - grantTo() should add the gold to the player
  */
 public class GoldReward implements Reward {
-    
+
     // TODO: Add a field for the gold amount
-    
-    // TODO: Add a constructor that takes the amount
-    
+
+    public GoldReward(int amount) {
+        // TODO: Store the amount in a field
+    }
+
     @Override
     public String getDescription() {
         // TODO: Return a description like "50 gold"

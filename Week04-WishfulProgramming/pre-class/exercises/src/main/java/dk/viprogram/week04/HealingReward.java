@@ -11,11 +11,13 @@ package dk.viprogram.week04;
  * - grantTo() should heal the player
  */
 public class HealingReward implements Reward {
-    
+
     // TODO: Add a field for the healing amount
-    
-    // TODO: Add a constructor that takes the amount
-    
+
+    public HealingReward(int amount) {
+        // TODO: Store the amount in a field
+    }
+
     @Override
     public String getDescription() {
         // TODO: Return a description like "Restore 30 HP"
