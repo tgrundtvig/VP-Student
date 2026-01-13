@@ -55,7 +55,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>dk.viprogram.week08.GameApp</mainClass>
+                    <mainClass>dk.viprogram.week08.SearchApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
