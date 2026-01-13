@@ -56,6 +56,11 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>dk.viprogram.week08.SearchApp</mainClass>
+                    <options>
+                        <option>--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                        <option>--add-opens=java.base/java.lang=ALL-UNNAMED</option>
+                        <option>--enable-native-access=ALL-UNNAMED</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>

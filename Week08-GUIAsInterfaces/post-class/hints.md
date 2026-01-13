@@ -206,10 +206,25 @@ if (results.isEmpty()) {
 mvn compile exec:java -Dexec.mainClass="dk.viprogram.week08.ConsoleSearchApp"
 ```
 
-### JavaFX Version
+### JavaFX Version (Terminal)
 ```bash
 mvn javafx:run
 ```
+
+### JavaFX Version (IntelliJ)
+
+If you want to run from IntelliJ instead of the terminal:
+
+1. Run the `Launcher` class (not `SearchApp`)
+2. To suppress warnings, add these VM options to your run configuration:
+   - Go to Run → Edit Configurations
+   - Select your Launcher configuration
+   - In "VM options" add:
+     ```
+     --add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --enable-native-access=ALL-UNNAMED
+     ```
+
+Note: The warnings about "Unsupported JavaFX configuration" are harmless - the app works fine.
 
 ## Still Stuck?
 
