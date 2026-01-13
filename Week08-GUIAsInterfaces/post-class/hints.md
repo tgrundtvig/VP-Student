@@ -226,6 +226,203 @@ If you want to run from IntelliJ instead of the terminal:
 
 Note: The warnings about "Unsupported JavaFX configuration" are harmless - the app works fine.
 
+---
+
+# Memory Card Game Exercise
+
+The Memory Card Game is a more complex example demonstrating the MVC pattern.
+You need to implement 4 TODO methods spread across Model, View (Console and JavaFX), and Controller.
+
+## Running the Memory Game
+
+### Console Version
+```bash
+mvn compile exec:java -Dexec.mainClass="dk.viprogram.week08.memory.ConsoleMemoryApp"
+```
+
+### JavaFX Version
+```bash
+mvn javafx:run -Dexec.mainClass="dk.viprogram.week08.memory.MemoryApp"
+```
+
+Or from IntelliJ: Run the `MemoryLauncher` class.
+
+## SimpleMemoryGameModel.checkMatch()
+
+This method checks if the two flipped cards match:
+
+```java
+@Override
+public MatchResult checkMatch() {
+    // Need exactly 2 cards to check
+    if (flippedCards.size() < 2) {
+        return MatchResult.NEED_MORE_CARDS;
+    }
+
+    Position pos1 = flippedCards.get(0);
+    Position pos2 = flippedCards.get(1);
+    Card card1 = getCard(pos1);
+    Card card2 = getCard(pos2);
+
+    // Increment move counter
+    moves++;
+
+    // Check if symbols match
+    if (card1.symbol().equals(card2.symbol())) {
+        // Match! Mark both cards as matched
+        setCard(pos1, card1.markMatched());
+        setCard(pos2, card2.markMatched());
+        matchesFound++;
+        flippedCards.clear();
+        return MatchResult.MATCH;
+    } else {
+        // No match - flip cards back down
+        setCard(pos1, card1.flipDown());
+        setCard(pos2, card2.flipDown());
+        flippedCards.clear();
+        return MatchResult.NO_MATCH;
+    }
+}
+```
+
+## ConsoleMemoryGameView.displayGrid()
+
+This method prints the game grid to the console:
+
+```java
+@Override
+public void displayGrid(List<List<Card>> grid) {
+    int rows = grid.size();
+    int cols = grid.get(0).size();
+
+    out.println();
+
+    // Print column headers
+    out.print("    ");
+    for (int c = 0; c < cols; c++) {
+        out.printf("%2d ", c);
+    }
+    out.println();
+
+    // Print separator line
+    out.print("  +");
+    for (int c = 0; c < cols; c++) {
+        out.print("--+");
+    }
+    out.println();
+
+    // Print each row
+    for (int r = 0; r < rows; r++) {
+        out.printf("%d |", r);
+        for (int c = 0; c < cols; c++) {
+            Card card = grid.get(r).get(c);
+            out.print(card.display() + "|");
+        }
+        out.println();
+
+        out.print("  +");
+        for (int c = 0; c < cols; c++) {
+            out.print("--+");
+        }
+        out.println();
+    }
+}
+```
+
+## JavaFXMemoryGameView.createCardButton()
+
+This method creates a button for each card in the grid:
+
+```java
+private Button createCardButton(Card card, int row, int col) {
+    Button button = new Button(card.display());
+
+    // Set style based on card state
+    if (card.matched()) {
+        button.setStyle(CARD_STYLE_MATCHED);
+    } else if (card.faceUp()) {
+        button.setStyle(CARD_STYLE_FACE_UP);
+    } else {
+        button.setStyle(CARD_STYLE_FACE_DOWN);
+    }
+
+    // Set click handler
+    button.setOnAction(event -> {
+        if (cardClickHandler != null) {
+            cardClickHandler.onCardClick(new Position(row, col));
+        }
+    });
+
+    // Disable if matched or face up
+    button.setDisable(card.matched() || card.faceUp());
+
+    return button;
+}
+```
+
+## MemoryGameController.handleCardClick() (two-card logic)
+
+The part after two cards are flipped:
+
+```java
+if (model.getFlippedCards().size() == 2) {
+    waitingForFlipBack = true;
+
+    view.scheduleAction(CARD_SHOW_DELAY_MS, () -> {
+        MemoryGameModel.MatchResult result = model.checkMatch();
+        waitingForFlipBack = false;
+
+        refreshView();
+
+        switch (result) {
+            case MATCH:
+                view.displayMessage("Match found! 🎉");
+                break;
+            case NO_MATCH:
+                view.displayMessage("No match. Try again!");
+                break;
+            default:
+                break;
+        }
+
+        if (model.isGameOver()) {
+            statsTimer.cancel();
+            handleGameOver();
+        }
+    });
+}
+```
+
+## Memory Game Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MemoryGameController                     │
+│  - handleCardClick(pos)  - handleNewGame(rows, cols)        │
+│  - refreshView()         - handleGameOver()                 │
+└─────────────────────────────────────────────────────────────┘
+           │                                │
+           │ Uses                          │ Uses
+           ▼                               ▼
+┌─────────────────────┐         ┌─────────────────────────────┐
+│  MemoryGameModel    │         │    MemoryGameView           │
+│  (Interface)        │         │    (Interface)              │
+├─────────────────────┤         ├─────────────────────────────┤
+│ - newGame()         │         │ - displayGrid()             │
+│ - flipCard()        │         │ - displayStats()            │
+│ - checkMatch()      │         │ - displayMessage()          │
+│ - getGrid()         │         │ - displayGameOver()         │
+│ - isGameOver()      │         │ - setCardClickHandler()     │
+└─────────────────────┘         └─────────────────────────────┘
+           △                               △
+           │                     ┌─────────┴─────────┐
+           │                     │                   │
+┌─────────────────────┐  ┌───────────────┐  ┌───────────────┐
+│SimpleMemoryGameModel│  │ConsoleMemory  │  │JavaFXMemory   │
+│                     │  │GameView       │  │GameView       │
+└─────────────────────┘  └───────────────┘  └───────────────┘
+```
+
 ## Still Stuck?
 
 - Review the ConsoleSearchView as a working example
