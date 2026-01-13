@@ -203,8 +203,8 @@ Design and implement a complete storage layer:
 
 ## Looking Ahead
 - Week 10: Example projects with complete architecture (MVC + Repository)
-- Weeks 11-14: Your project will use these patterns
-- The 2-week gap: Implement your designed storage layer
+- Weeks 11-14: Design your exam project (interfaces, tests, architecture)
+- The 2-week gap: Implement your complete designed system
 
 ## Verification Checklist
 

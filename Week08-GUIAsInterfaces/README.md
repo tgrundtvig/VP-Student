@@ -202,8 +202,9 @@ Take the search engine from Week 7 and add a GUI:
 
 ## Looking Ahead
 - Week 9: Persistence - Repository pattern (interfaces for storage)
-- Week 10: Example projects with complete MVC architecture
-- Weeks 11-14: Your project will use these patterns
+- Week 10: Example projects with complete MVC + Repository architecture
+- Weeks 11-14: Design your exam project using all these patterns
+- The 2-week gap: Implement your complete designed system
 
 ## Verification Checklist
 Before class, ensure you can:
