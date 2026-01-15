@@ -34,10 +34,17 @@ public record Task(
     String categoryId,  // References another entity by ID
     LocalDate dueDate,
     boolean completed
-) { }
+) {
+    // Custom toString() for readable dropdown display
+    @Override
+    public String toString() {
+        String status = completed ? "[X]" : "[ ]";
+        return String.format("%s %s [%s]", status, title, priority);
+    }
+}
 ```
 
-Your entities should follow the same pattern.
+Your entities should follow the same pattern. Note the custom `toString()` - this is important for JavaFX dropdowns!
 
 ### Hint 5: Link entities by ID, not by object
 Instead of:
@@ -57,6 +64,16 @@ public record Order(
 ```
 
 This makes persistence and equality simpler.
+
+### Hint 5b: Look at Task Manager's categories for entity relationships
+Task Manager shows a complete category system:
+- `Category` entity with id, name, color
+- `CategoryRepository` for CRUD operations
+- Tasks reference categories via `categoryId`
+- Controller has `showTasksByCategory()` for filtering
+- View has `promptSelectCategory()` for user selection
+
+This is a great template for any "items with categories" design.
 
 ## Designing Interfaces
 
@@ -89,12 +106,32 @@ Both example projects use:
 app/
 ├── model/           # Records (entities)
 ├── repository/      # Data access interfaces + implementations
-├── view/            # UI interface + implementations
+├── view/            # UI interface + implementations (Console, JavaFX, Mock)
 ├── controller/      # Business logic
-└── App.java         # Entry point
+├── App.java         # Console entry point
+└── AppGUI.java      # JavaFX entry point (optional)
 ```
 
 Your project can follow this exactly.
+
+### Hint 9b: Consider multiple view implementations
+Both example projects have THREE view implementations:
+- `ConsoleView` - text-based, runs in terminal
+- `JavaFXView` - graphical UI with buttons and dialogs
+- `MockView` - for testing, no real I/O
+
+The same controller works with all three! This demonstrates the power of interfaces.
+
+### Hint 9c: Seed sample data for demonstration
+Both example projects seed sample data on startup:
+```java
+private static void seedSampleData(Repository repo) {
+    repo.save(Entity.create("Example 1", ...));
+    repo.save(Entity.create("Example 2", ...));
+}
+```
+
+This makes your app immediately usable when someone runs it. Great for demos!
 
 ### Hint 10: Draw it before coding
 ASCII art architecture diagrams help you think:

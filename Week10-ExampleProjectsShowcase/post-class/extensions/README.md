@@ -39,7 +39,12 @@ These extensions are for students who have completed their project proposal and 
 
 **For View:**
 - Design `ConsoleView` (text-based)
-- Design `JavaFXView` (GUI-based, just method signatures)
+- Design `JavaFXView` (GUI-based)
+
+**Reference:** Both example projects (Task Manager and Quiz App) have working Console AND JavaFX views. Study how they handle the same interface differently:
+- Console uses `Scanner` for input, `System.out` for output
+- JavaFX uses dialogs, buttons, and event handlers
+- Both satisfy the same `View` interface contract
 
 **Why this helps:** If your interface can support multiple implementations, it's well-designed.
 

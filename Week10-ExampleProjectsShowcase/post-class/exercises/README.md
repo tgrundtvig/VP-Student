@@ -131,3 +131,21 @@ Tests verify that all proposal sections are filled in with sufficient detail.
 3. **Think about testing** - How will you test each component?
 4. **Consider the demo** - What will you show at the exam?
 5. **Learn from examples** - Apply patterns from Task Manager and Quiz App
+
+## Learning from the Example Projects
+
+### Task Manager demonstrates:
+- Category system with filtering (entity relationships)
+- Multiple view implementations (Console, JavaFX, Mock)
+- Sample data seeding for immediate usability
+- Custom `toString()` for readable dropdowns
+- 9 menu options showing feature completeness
+
+### Quiz App demonstrates:
+- Strategy pattern for swappable scoring algorithms
+- Polymorphism with Question interface (MultipleChoice, TrueFalse)
+- High scores tracking (one-to-many relationships)
+- Hints system with different UX per view type
+- Sample quizzes seeded for demonstration
+
+Run both projects with `mvn javafx:run` to see the JavaFX versions!
