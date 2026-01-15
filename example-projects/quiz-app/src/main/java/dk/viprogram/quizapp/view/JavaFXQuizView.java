@@ -36,6 +36,7 @@ public class JavaFXQuizView implements QuizView {
     private final AtomicInteger menuChoice = new AtomicInteger(-1);
     private CountDownLatch menuLatch;
     private CompletableFuture<String> answerFuture;
+    private String currentHint;
 
     public JavaFXQuizView(Stage stage) {
         this.stage = stage;
@@ -51,7 +52,8 @@ public class JavaFXQuizView implements QuizView {
         questionLabel = new Label("");
         questionLabel.setFont(Font.font("System", 18));
         questionLabel.setWrapText(true);
-        questionLabel.setMaxWidth(600);
+        questionLabel.setMaxWidth(Double.MAX_VALUE);
+        questionLabel.setMinHeight(Region.USE_PREF_SIZE);
 
         // Answer options
         answerBox = new VBox(10);
@@ -144,8 +146,11 @@ public class JavaFXQuizView implements QuizView {
 
     @Override
     public void showQuestion(Question question, int questionNumber, int totalQuestions) {
+        currentHint = question.getHint();
+
         Platform.runLater(() -> {
             buttonBox.setVisible(false);
+            feedbackArea.clear();
 
             String header = String.format("Question %d of %d [%s - %d points]",
                     questionNumber, totalQuestions, question.getCategory(), question.getPoints());
@@ -190,6 +195,14 @@ public class JavaFXQuizView implements QuizView {
 
                 answerBox.getChildren().addAll(trueBtn, falseBtn);
             }
+
+            // Add hint button
+            Button hintBtn = new Button("Show Hint");
+            hintBtn.setOnAction(e -> {
+                feedbackArea.setText("\nHint: " + currentHint + "\n");
+                hintBtn.setDisable(true);
+            });
+            answerBox.getChildren().add(hintBtn);
         });
     }
 
@@ -344,23 +357,9 @@ public class JavaFXQuizView implements QuizView {
 
     @Override
     public boolean promptUseHint() {
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
-
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Hint");
-            alert.setHeaderText(null);
-            alert.setContentText("Would you like a hint?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            future.complete(result.isPresent() && result.get() == ButtonType.OK);
-        });
-
-        try {
-            return future.get();
-        } catch (Exception e) {
-            return false;
-        }
+        // In JavaFX, we use a hint button instead of a modal prompt
+        // The button is shown in showQuestion() and users click it if they want a hint
+        return false;
     }
 
     @Override

@@ -40,4 +40,12 @@ public record Quiz(
     public int getQuestionCount() {
         return questions.size();
     }
+
+    /**
+     * Returns a short display string for use in dropdowns and lists.
+     */
+    @Override
+    public String toString() {
+        return String.format("%s (%d questions)", title, getQuestionCount());
+    }
 }
