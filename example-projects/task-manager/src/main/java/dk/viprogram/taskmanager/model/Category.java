@@ -19,4 +19,12 @@ public record Category(
                 "#808080"
         );
     }
+
+    /**
+     * Returns a display-friendly string for use in dropdowns.
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
 }

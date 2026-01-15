@@ -41,11 +41,12 @@ public class ConsoleTaskView implements TaskView {
         System.out.println("1. View all tasks");
         System.out.println("2. View incomplete tasks");
         System.out.println("3. View overdue tasks");
-        System.out.println("4. Add new task");
-        System.out.println("5. Complete a task");
-        System.out.println("6. Delete a task");
-        System.out.println("7. Manage categories");
-        System.out.println("8. Exit");
+        System.out.println("4. View tasks by category");
+        System.out.println("5. Add new task");
+        System.out.println("6. Complete a task");
+        System.out.println("7. Delete a task");
+        System.out.println("8. Manage categories");
+        System.out.println("9. Exit");
         System.out.print("\nChoice: ");
 
         try {
@@ -183,6 +184,27 @@ public class ConsoleTaskView implements TaskView {
         }
 
         return Category.of(name);
+    }
+
+    @Override
+    public Category promptSelectCategory(List<Category> categories, String prompt) {
+        if (categories.isEmpty()) {
+            showMessage("No categories available");
+            return null;
+        }
+
+        showCategories(categories);
+        System.out.print(prompt + " (0 to cancel): ");
+
+        try {
+            int choice = Integer.parseInt(scanner.nextLine().trim());
+            if (choice > 0 && choice <= categories.size()) {
+                return categories.get(choice - 1);
+            }
+        } catch (NumberFormatException e) {
+            // Cancelled
+        }
+        return null;
     }
 
     @Override

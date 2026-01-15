@@ -70,4 +70,13 @@ public record Task(
     public boolean isOverdue() {
         return !completed && dueDate != null && dueDate.isBefore(LocalDate.now());
     }
+
+    /**
+     * Returns a short display string for use in dropdowns.
+     */
+    @Override
+    public String toString() {
+        String status = completed ? "[X]" : "[ ]";
+        return String.format("%s %s [%s]", status, title, priority);
+    }
 }

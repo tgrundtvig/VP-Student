@@ -29,6 +29,7 @@ public class MockTaskView implements TaskView {
     private final Queue<Task> tasksToCreate = new LinkedList<>();
     private final Queue<Category> categoriesToCreate = new LinkedList<>();
     private final Queue<Task> taskSelections = new LinkedList<>();
+    private final Queue<Category> categorySelections = new LinkedList<>();
     private final Queue<String> textInputs = new LinkedList<>();
 
     // ==================== Programming Methods ====================
@@ -51,6 +52,10 @@ public class MockTaskView implements TaskView {
 
     public void queueTaskSelection(Task task) {
         taskSelections.add(task);
+    }
+
+    public void queueCategorySelection(Category category) {
+        categorySelections.add(category);
     }
 
     public void queueTextInput(String text) {
@@ -82,7 +87,7 @@ public class MockTaskView implements TaskView {
     @Override
     public int showMainMenu() {
         displayedMessages.add("MENU");
-        return menuChoices.isEmpty() ? 8 : menuChoices.poll(); // Default to exit
+        return menuChoices.isEmpty() ? 9 : menuChoices.poll(); // Default to exit
     }
 
     @Override
@@ -126,6 +131,12 @@ public class MockTaskView implements TaskView {
     public Category promptForNewCategory() {
         displayedMessages.add("PROMPT_NEW_CATEGORY");
         return categoriesToCreate.poll();
+    }
+
+    @Override
+    public Category promptSelectCategory(List<Category> categories, String prompt) {
+        displayedMessages.add("PROMPT_SELECT_CATEGORY: " + prompt);
+        return categorySelections.poll();
     }
 
     @Override

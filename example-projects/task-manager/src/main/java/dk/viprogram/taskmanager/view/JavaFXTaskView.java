@@ -83,23 +83,26 @@ public class JavaFXTaskView implements TaskView {
         Button viewOverdueBtn = new Button("Overdue");
         viewOverdueBtn.setOnAction(e -> setMenuChoice(3));
 
+        Button viewByCategoryBtn = new Button("By Category");
+        viewByCategoryBtn.setOnAction(e -> setMenuChoice(4));
+
         Button addBtn = new Button("Add Task");
-        addBtn.setOnAction(e -> setMenuChoice(4));
+        addBtn.setOnAction(e -> setMenuChoice(5));
 
         Button completeBtn = new Button("Complete");
-        completeBtn.setOnAction(e -> setMenuChoice(5));
+        completeBtn.setOnAction(e -> setMenuChoice(6));
 
         Button deleteBtn = new Button("Delete");
-        deleteBtn.setOnAction(e -> setMenuChoice(6));
+        deleteBtn.setOnAction(e -> setMenuChoice(7));
 
         Button categoriesBtn = new Button("Categories");
-        categoriesBtn.setOnAction(e -> setMenuChoice(7));
+        categoriesBtn.setOnAction(e -> setMenuChoice(8));
 
         Button exitBtn = new Button("Exit");
-        exitBtn.setOnAction(e -> setMenuChoice(8));
+        exitBtn.setOnAction(e -> setMenuChoice(9));
 
         HBox box = new HBox(10);
-        box.getChildren().addAll(viewAllBtn, viewIncompleteBtn, viewOverdueBtn,
+        box.getChildren().addAll(viewAllBtn, viewIncompleteBtn, viewOverdueBtn, viewByCategoryBtn,
                 addBtn, completeBtn, deleteBtn, categoriesBtn, exitBtn);
         return box;
     }
@@ -134,7 +137,7 @@ public class JavaFXTaskView implements TaskView {
             menuLatch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return 8; // Exit
+            return 9; // Exit
         }
         return menuChoice.get();
     }
@@ -224,6 +227,9 @@ public class JavaFXTaskView implements TaskView {
             ComboBox<Priority> priorityBox = new ComboBox<>();
             priorityBox.getItems().addAll(Priority.values());
             priorityBox.setValue(Priority.MEDIUM);
+            ComboBox<Category> categoryBox = new ComboBox<>();
+            categoryBox.getItems().add(null); // Option for no category
+            categoryBox.getItems().addAll(categories);
             DatePicker datePicker = new DatePicker();
 
             grid.add(new Label("Title:"), 0, 0);
@@ -232,8 +238,10 @@ public class JavaFXTaskView implements TaskView {
             grid.add(descField, 1, 1);
             grid.add(new Label("Priority:"), 0, 2);
             grid.add(priorityBox, 1, 2);
-            grid.add(new Label("Due Date:"), 0, 3);
-            grid.add(datePicker, 1, 3);
+            grid.add(new Label("Category:"), 0, 3);
+            grid.add(categoryBox, 1, 3);
+            grid.add(new Label("Due Date:"), 0, 4);
+            grid.add(datePicker, 1, 4);
 
             dialog.getDialogPane().setContent(grid);
 
@@ -243,11 +251,12 @@ public class JavaFXTaskView implements TaskView {
                     if (title.isEmpty()) {
                         return null;
                     }
+                    Category selectedCategory = categoryBox.getValue();
                     return Task.create(
                             title,
                             descField.getText().trim(),
                             priorityBox.getValue(),
-                            null,
+                            selectedCategory != null ? selectedCategory.id() : null,
                             datePicker.getValue()
                     );
                 }
@@ -281,6 +290,32 @@ public class JavaFXTaskView implements TaskView {
             } else {
                 future.complete(null);
             }
+        });
+
+        try {
+            return future.get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Category promptSelectCategory(List<Category> categories, String prompt) {
+        if (categories.isEmpty()) {
+            showMessage("No categories available");
+            return null;
+        }
+
+        CompletableFuture<Category> future = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            ChoiceDialog<Category> dialog = new ChoiceDialog<>(categories.get(0), categories);
+            dialog.setTitle("Select Category");
+            dialog.setHeaderText(prompt);
+            dialog.setContentText("Category:");
+
+            Optional<Category> result = dialog.showAndWait();
+            future.complete(result.orElse(null));
         });
 
         try {

@@ -91,6 +91,15 @@ public interface TaskView {
     Category promptForNewCategory();
 
     /**
+     * Prompts user to select a category from a list.
+     *
+     * @param categories the categories to choose from
+     * @param prompt the prompt to display
+     * @return the selected category, or null if cancelled
+     */
+    Category promptSelectCategory(List<Category> categories, String prompt);
+
+    /**
      * Prompts user to select a task from a list.
      *
      * @param tasks the tasks to choose from

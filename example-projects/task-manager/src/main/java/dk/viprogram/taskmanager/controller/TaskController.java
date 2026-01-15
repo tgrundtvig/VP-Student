@@ -69,11 +69,12 @@ public class TaskController {
             case 1 -> showAllTasks();
             case 2 -> showIncompleteTasks();
             case 3 -> showOverdueTasks();
-            case 4 -> addNewTask();
-            case 5 -> completeTask();
-            case 6 -> deleteTask();
-            case 7 -> manageCategories();
-            case 8 -> running = false;
+            case 4 -> showTasksByCategory();
+            case 5 -> addNewTask();
+            case 6 -> completeTask();
+            case 7 -> deleteTask();
+            case 8 -> manageCategories();
+            case 9 -> running = false;
             default -> view.showError("Invalid choice. Please try again.");
         }
     }
@@ -100,6 +101,23 @@ public class TaskController {
     public void showOverdueTasks() {
         List<Task> tasks = taskRepository.findOverdue();
         view.showTasks(tasks, "Overdue Tasks (" + tasks.size() + ")");
+    }
+
+    /**
+     * Displays tasks filtered by category.
+     */
+    public void showTasksByCategory() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            view.showMessage("No categories available. Create some first!");
+            return;
+        }
+
+        Category selected = view.promptSelectCategory(categories, "Select category to filter by");
+        if (selected != null) {
+            List<Task> tasks = taskRepository.findByCategory(selected.id());
+            view.showTasks(tasks, "Tasks in '" + selected.name() + "' (" + tasks.size() + ")");
+        }
     }
 
     /**
