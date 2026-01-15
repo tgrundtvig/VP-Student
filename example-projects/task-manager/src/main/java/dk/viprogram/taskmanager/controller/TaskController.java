@@ -112,6 +112,7 @@ public class TaskController {
         if (task != null) {
             taskRepository.save(task);
             view.showSuccess("Task created: " + task.title());
+            showAllTasks(); // Refresh the task list
         }
     }
 
@@ -126,6 +127,7 @@ public class TaskController {
             Task completed = selected.complete();
             taskRepository.save(completed);
             view.showSuccess("Task completed: " + completed.title());
+            showAllTasks(); // Refresh the task list
         }
     }
 
@@ -140,6 +142,7 @@ public class TaskController {
             if (view.promptConfirm("Delete '" + selected.title() + "'?")) {
                 taskRepository.deleteById(selected.id());
                 view.showSuccess("Task deleted");
+                showAllTasks(); // Refresh the task list
             }
         }
     }

@@ -21,8 +21,9 @@ public class TaskManagerApp {
         var taskRepository = new InMemoryTaskRepository();
         var categoryRepository = new InMemoryCategoryRepository();
 
-        // 2. Create view
+        // 2. Create view - swap implementation here!
         var view = new ConsoleTaskView();
+        // var view = new JavaFXTaskView();  // Same interface, different UI
 
         // 3. Wire everything to controller
         var controller = new TaskController(view, taskRepository, categoryRepository);
@@ -32,6 +33,8 @@ public class TaskManagerApp {
     }
 }
 ```
+
+Notice how swapping from console to JavaFX requires changing only ONE line. The controller doesn't care which view implementation it receives - it only knows about the `TaskView` interface.
 
 **Questions to ask:**
 - What concrete implementations are created?
@@ -50,14 +53,17 @@ Repository<T, ID>  (generic interface)
             └── InMemoryCategoryRepository
 
 TaskView (interface)
-    ├── ConsoleTaskView
+    ├── ConsoleTaskView (text-based UI)
+    ├── JavaFXTaskView (graphical UI)
     └── MockTaskView (for testing)
 ```
+
+This is interface-first design in action: one interface, three implementations for different purposes. The controller works identically with all three.
 
 **Questions to ask:**
 - Which interfaces are generic vs domain-specific?
 - How do interfaces enable different implementations?
-- Which implementations exist for testing?
+- Which implementations exist for production? For testing?
 
 ### 3. Trace the Data Flow
 
@@ -202,6 +208,7 @@ Signs of Factory:
 2. **High cohesion:** Each class has a single responsibility
 3. **Testability:** Can test with mocks, no real I/O needed
 4. **Flexibility:** Can swap implementations without changing code
+   - Example: The same controller works with ConsoleTaskView, JavaFXTaskView, or MockTaskView
 5. **Clear layers:** Model → Repository → Controller → View
 
 ### Signs of Poor Architecture
