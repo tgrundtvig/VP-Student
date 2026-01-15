@@ -11,6 +11,15 @@ This project serves as a reference implementation showing:
 - **Dependency injection** - Components receive their dependencies
 - **Testable architecture** - Mock implementations enable thorough testing
 
+## Features
+
+- **Task Management**: Create, complete, and delete tasks
+- **Categories**: Organize tasks into categories (Work, Personal, Shopping, etc.)
+- **Priority Levels**: LOW, MEDIUM, HIGH, URGENT
+- **Due Dates**: Track deadlines with overdue detection
+- **Multiple Views**: Console and JavaFX implementations
+- **Filtering**: View all tasks, incomplete only, overdue only, or by category
+
 ## Architecture Overview
 
 ```
@@ -152,9 +161,30 @@ mvn clean compile
 # Run tests
 mvn test
 
-# Run the application
+# Run the console application
 mvn exec:java -Dexec.mainClass="dk.viprogram.taskmanager.TaskManagerApp"
+
+# Run the JavaFX GUI application
+mvn javafx:run
 ```
+
+### Menu Options
+
+1. **View all tasks** - Show all tasks with status and priority
+2. **View incomplete tasks** - Filter to show only incomplete tasks
+3. **View overdue tasks** - Filter to show only overdue tasks
+4. **View tasks by category** - Select a category to filter by
+5. **Add new task** - Create a task with title, description, priority, category, and due date
+6. **Complete a task** - Mark a task as done
+7. **Delete a task** - Remove a task
+8. **Manage categories** - View and create categories
+9. **Exit** - Close the application
+
+### Sample Data
+
+The application starts with sample data for demonstration:
+- **Categories**: Work, Personal, Shopping
+- **Tasks**: 5 sample tasks across different categories, including one overdue task
 
 ## Testing Strategy
 
