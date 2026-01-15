@@ -37,7 +37,8 @@ This project serves as a reference implementation showing:
          ▼                              ▼
 ┌─────────────────┐          ┌─────────────────────────────────┐
 │ ConsoleTaskView │          │    InMemoryTaskRepository       │
-│   (or MockView) │          │     (or JsonFileRepository)     │
+│ JavaFXTaskView  │          │     (or JsonFileRepository)     │
+│   (or MockView) │          │                                 │
 └─────────────────┘          └─────────────────────────────────┘
 ```
 
@@ -58,14 +59,16 @@ dk.viprogram.taskmanager/
 │   └── InMemoryCategoryRepository.java  # In-memory implementation
 │
 ├── view/                 # User interface layer
-│   ├── TaskView.java     # View interface
+│   ├── TaskView.java         # View interface
 │   ├── ConsoleTaskView.java  # Console implementation
+│   ├── JavaFXTaskView.java   # JavaFX implementation
 │   └── MockTaskView.java     # Test mock
 │
 ├── controller/           # Business logic
 │   └── TaskController.java   # Main controller
 │
-└── TaskManagerApp.java   # Entry point (composition root)
+├── TaskManagerApp.java   # Console entry point
+└── TaskManagerGUI.java   # JavaFX entry point
 ```
 
 ## Key Design Decisions
@@ -205,22 +208,15 @@ var taskRepository = new JsonFileTaskRepository("tasks.json");
 // Everything else stays the same!
 ```
 
-### Adding a GUI
+### Running with JavaFX GUI
 
-Create `JavaFXTaskView` implementing `TaskView`:
+The project includes a JavaFX implementation. Run it with:
 
-```java
-public class JavaFXTaskView implements TaskView {
-    // Implement all TaskView methods with JavaFX components...
-}
+```bash
+mvn javafx:run
 ```
 
-Then change `TaskManagerApp`:
-
-```java
-var view = new JavaFXTaskView();
-// Everything else stays the same!
-```
+Or use `TaskManagerGUI.java` as the entry point. The JavaFX view implements the same `TaskView` interface as the console version - demonstrating that the controller works identically with either UI.
 
 ## Lessons for Your Project
 

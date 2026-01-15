@@ -105,14 +105,16 @@ dk.viprogram.quizapp/
 │   └── PenaltyScoring.java
 │
 ├── view/                    # User interface
-│   ├── QuizView.java
-│   ├── ConsoleQuizView.java
-│   └── MockQuizView.java
+│   ├── QuizView.java        # View interface
+│   ├── ConsoleQuizView.java # Console implementation
+│   ├── JavaFXQuizView.java  # JavaFX implementation
+│   └── MockQuizView.java    # Test mock
 │
 ├── controller/              # Business logic
 │   └── QuizController.java
 │
-└── QuizApp.java            # Entry point
+├── QuizApp.java            # Console entry point
+└── QuizAppGUI.java         # JavaFX entry point
 ```
 
 ## Design Decisions
@@ -172,9 +174,14 @@ mvn clean compile
 # Run tests
 mvn test
 
-# Run the application
+# Run the console application
 mvn exec:java -Dexec.mainClass="dk.viprogram.quizapp.QuizApp"
+
+# Run the JavaFX GUI application
+mvn javafx:run
 ```
+
+The project includes both console and JavaFX implementations of `QuizView`. Both use the same controller - demonstrating that the interface abstraction allows swapping UIs without changing business logic.
 
 ## Extension Ideas
 
