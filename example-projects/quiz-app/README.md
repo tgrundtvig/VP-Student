@@ -11,6 +11,15 @@ This project demonstrates:
 - **Strategy pattern** - Swappable scoring algorithms
 - **Dependency injection** - Testable, flexible architecture
 
+## Features
+
+- **Multiple Question Types**: Multiple choice and true/false questions
+- **Hints**: Optional hints available for each question (click "Show Hint" button)
+- **Scoring System**: Points awarded for correct answers, with grade calculation
+- **High Scores**: Track and display top scores per quiz
+- **Multiple Views**: Console and JavaFX implementations
+- **Swappable Scoring**: Different scoring strategies (standard, penalty for wrong answers)
+
 ## Architecture Overview
 
 ```
@@ -182,6 +191,24 @@ mvn javafx:run
 ```
 
 The project includes both console and JavaFX implementations of `QuizView`. Both use the same controller - demonstrating that the interface abstraction allows swapping UIs without changing business logic.
+
+### Menu Options
+
+1. **Take a Quiz** - Select a quiz, enter your name, and answer questions
+2. **High Scores** - View top scores for any quiz
+3. **Exit** - Close the application
+
+### Sample Data
+
+The application starts with two sample quizzes:
+
+**Java Basics** (4 questions, 30 points)
+- Multiple choice and true/false questions about Java fundamentals
+- Topics: class keyword, static typing, default values, String immutability
+
+**Design Patterns** (3 questions, 40 points)
+- Questions about creational, behavioral, and architectural patterns
+- Topics: Factory pattern, Strategy pattern, Repository pattern
 
 ## Extension Ideas
 
