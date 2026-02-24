@@ -5,29 +5,29 @@ This guide will help you set up your development environment for the Advanced Pr
 ## Required Software
 
 You need to install:
-1. Java Development Kit (JDK) 21
+1. Java Development Kit (JDK) 25
 2. Maven (build tool)
 3. IntelliJ IDEA (IDE)
 4. Git (version control) - Strongly recommended
 
-## Step 1: Install Java 21 LTS
+## Step 1: Install Java 25
 
 ### Windows
 
-1. Download Java 21 from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [Adoptium](https://adoptium.net/)
+1. Download Java 25 from [Oracle](https://www.oracle.com/java/technologies/downloads/) or [Adoptium](https://adoptium.net/)
 2. Run the installer
 3. Follow the installation wizard (default settings are fine)
 4. Verify installation:
    ```bash
    java -version
    ```
-   Should show: `java version "21.x.x"`
+   Should show: `java version "25.x.x"`
 
 ### macOS
 
 **Using Homebrew (recommended):**
 ```bash
-brew install openjdk@21
+brew install openjdk@25
 ```
 
 **Verify installation:**
@@ -40,12 +40,12 @@ java -version
 **Ubuntu/Debian:**
 ```bash
 sudo apt update
-sudo apt install openjdk-21-jdk
+sudo apt install openjdk-25-jdk
 ```
 
 **Fedora:**
 ```bash
-sudo dnf install java-21-openjdk-devel
+sudo dnf install java-25-openjdk-devel
 ```
 
 **Verify installation:**
@@ -120,11 +120,11 @@ IntelliJ IDEA is the recommended IDE for this course. The Community Edition (fre
 2. Create a new project:
    - File → New → Project
    - Select "Maven"
-   - JDK: Select Java 21
+   - JDK: Select Java 25
    - Click "Next" and "Finish"
-3. If Java 21 is not listed:
+3. If Java 25 is not listed:
    - Click "Download JDK"
-   - Select version 21
+   - Select version 25
    - Download and configure
 
 ## Step 4: Install Git (Strongly Recommended)
@@ -250,14 +250,14 @@ You should see: `BUILD SUCCESS` with test results
 3. Select "Run 'App.main()'"
 4. You should see "Hello World!" in the console
 
-### 6. Verify Java 21 Features
+### 6. Verify Java 25 Features
 
 Create a new file `test-setup/hello-world/src/main/java/com/test/RecordTest.java`:
 
 ```java
 package com.test;
 
-// Java records (Java 16+, we're using 21)
+// Java records (Java 16+, we're using 25)
 record Person(String name, int age) {
     // Records are immutable data carriers
 }
@@ -272,20 +272,20 @@ public class RecordTest {
 }
 ```
 
-Run this file. If it works, Java 21 is properly configured!
+Run this file. If it works, Java 25 is properly configured!
 
 ## Troubleshooting
 
-### "java: invalid source release: 21"
+### "java: invalid source release: 25"
 
 **Problem:** IntelliJ is using the wrong Java version.
 
 **Solution:**
 1. File → Project Structure → Project
-2. Set SDK to Java 21
-3. Set Language Level to "21 - Record patterns..."
+2. Set SDK to Java 25
+3. Set Language Level to 25
 4. File → Settings → Build, Execution, Deployment → Compiler → Java Compiler
-5. Set "Project bytecode version" to 21
+5. Set "Project bytecode version" to 25
 
 ### "mvn: command not found"
 
@@ -320,7 +320,7 @@ Once all tests pass, you're ready to start the course!
 
 Next steps:
 1. Read [how-to-use-github.md](how-to-use-github.md) to set up version control
-2. Navigate to `Week01-NaiveApproach/` to begin
+2. Navigate to `Week01-GettingStarted/` to begin
 3. Complete the pre-class reading and exercises
 
 ## Need Help?
@@ -329,7 +329,7 @@ If you encounter issues not covered here:
 - Ask in class
 - Check with classmates
 - Consult the official documentation:
-  - [Java docs](https://docs.oracle.com/en/java/javase/21/)
+  - [Java docs](https://docs.oracle.com/en/java/javase/25/)
   - [Maven docs](https://maven.apache.org/guides/)
   - [IntelliJ docs](https://www.jetbrains.com/help/idea/)
   - [Git docs](https://git-scm.com/doc)

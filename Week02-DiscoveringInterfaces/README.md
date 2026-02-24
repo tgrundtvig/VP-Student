@@ -36,3 +36,21 @@ In class we will apply the interface pattern to our text adventure:
 - Build `ScannerTextIn` for real gameplay and `ScriptedTextIn` for testing
 - Refactor `Player` to accept any `TextIn` — just like your Receptionist exercise!
 - Run the game with scripted input to prove it works without a human
+
+## Post-Class Work
+
+**Estimated time: 60-75 minutes**
+
+1. **[Reading: The Principles Behind What We Built](post-class/reading.md)** (~20 minutes)
+   - Names dependency injection, programming to an interface, seams
+   - Explains the Dependency Inversion Principle
+   - Key exam reference for the course's core concept
+
+2. **[Exercise 1: A Third TextIn](post-class/exercises/exercise-1-third-textin.md)** (~20 minutes)
+   - Create `RandomTextIn implements TextIn` — random direction input
+   - Demonstrates: same interface, new implementation, zero changes to Player
+
+3. **[Exercise 2: Spot the Dependency](post-class/exercises/exercise-2-spot-the-dependency.md)** (~25 minutes)
+   - Identify hardcoded dependencies in code snippets
+   - Sketch interfaces that would fix them
+   - Pure design thinking — no implementation required

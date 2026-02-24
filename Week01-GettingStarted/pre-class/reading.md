@@ -1,5 +1,36 @@
 # Getting Ready to Build
 
+## Part 0: Java Class Basics (Quick Refresher)
+
+If you're coming from Processing, Java will look familiar but has a few concepts that Processing hides from you. Here's what you'll see in this week's code — just enough to follow along.
+
+**A class** bundles data (fields) and behavior (methods) together. In Processing, your code lives in a sketch. In Java, everything lives inside a class.
+
+**Fields** are variables that belong to an object. We mark them `private` so only the class itself can touch them:
+
+```java
+public class Room {
+    private String name;        // this Room's data
+    private Room north;         // a reference to another Room object
+}
+```
+
+**A constructor** runs when you create an object with `new`. It has the same name as the class and no return type:
+
+```java
+public Room(String name) {
+    this.name = name;    // this.name = the field, name = the parameter
+}
+```
+
+**`this`** means "the current object." You need it when a parameter has the same name as a field — otherwise Java can't tell them apart.
+
+**`public` vs `private`**: `public` means anyone can use it; `private` means only this class can. Fields are usually `private`, methods are usually `public`.
+
+**`null`** means "no object." A `Room` field like `north` starts out `null` — there's nothing connected yet. If you call a method on `null`, Java crashes with a `NullPointerException`.
+
+For a more detailed reference with code examples, see the [Java for Processing Programmers](../../quick-reference/java-for-processing-programmers.md) guide.
+
 ## Part 1: What This Course Is About
 
 This is not a course about Java syntax. You already know enough Java to write classes, use loops, and call methods. This course is about **design** — how to structure programs so they are easy to understand, easy to test, and easy to change.

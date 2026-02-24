@@ -64,7 +64,7 @@ By the end of this course, you will be able to:
 
 ## Technical Requirements
 
-- Java 21 LTS
+- Java 25
 - Maven (build tool)
 - IntelliJ IDEA (recommended IDE)
 - Git and GitHub account (strongly recommended)
@@ -74,12 +74,12 @@ See [setup-guide.md](setup-guide.md) for detailed installation instructions.
 ## Repository Organization
 
 ```
-Week01-NaiveApproach/
+Week01-GettingStarted/
   README.md                # Week overview and learning objectives
   pre-class/              # Reading + simple exercises (DO BEFORE CLASS)
   post-class/             # Advanced exercises + hints (DO AFTER CLASS)
 
-Week02-PainPoints/
+Week02-DiscoveringInterfaces/
   [same structure]
 
 [... weeks 3-14 ...]
@@ -143,7 +143,7 @@ Your project demonstrates your ability to apply interface-first design to a real
 
 1. Follow the [setup-guide.md](setup-guide.md) to install required tools
 2. Read [how-to-use-github.md](how-to-use-github.md) to set up version control
-3. Navigate to Week01-NaiveApproach and begin!
+3. Navigate to Week01-GettingStarted and begin!
 
 ---
 

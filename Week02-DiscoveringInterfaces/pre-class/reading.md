@@ -202,7 +202,12 @@ public interface Greeting
 
 This says: "A Greeting is anything that can take a name and produce a greeting message." It says nothing about *what* the greeting looks like.
 
-Now we can write two different implementations:
+Now we can write two different implementations. Two new Java keywords appear here:
+
+- **`implements Greeting`** means "this class promises to provide every method that the `Greeting` interface declares." If you forget a method, the compiler will tell you.
+- **`@Override`** is a safety annotation. It tells the compiler: "I intend to implement a method from the interface." If you misspell the method name or get the parameters wrong, the compiler catches the mistake immediately instead of silently creating a wrong method.
+
+(For a fuller explanation, see the [Java for Processing Programmers](../../quick-reference/java-for-processing-programmers.md) guide.)
 
 ```java
 public class FormalGreeting implements Greeting

@@ -36,3 +36,19 @@ In class we will build the first version of our text adventure game together:
 - A `Mace` (maze) and a factory that builds one
 - A `Player` that moves between rooms
 - A playable game by the end of the session
+
+## Post-Class Work
+
+**Estimated time: 45-60 minutes**
+
+1. **[Reading: The Patterns Behind What We Built](post-class/reading.md)** (~15 minutes)
+   - Names the object graph and reference semantics patterns
+   - Explains bidirectional linking and null as "no connection"
+
+2. **[Exercise 1: Bidirectional Waypoints](post-class/exercises/exercise-1-bidirectional-waypoints.md)** (~20 minutes)
+   - Extend Waypoint with `prev` links and a bidirectional `connect` method
+   - Walk a chain forward and backward
+
+3. **[Exercise 2: Maze Explorer](post-class/exercises/exercise-2-maze-explorer.md)** (~20 minutes)
+   - Design and build your own maze of 5+ rooms
+   - Navigate it with ScriptedTextIn
