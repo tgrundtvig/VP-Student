@@ -1,5 +1,7 @@
 package dk.ek.evu.vpf26.txtadv.user;
 
+import java.util.List;
+
 public interface TextAppUser
 {
     //Output
@@ -14,4 +16,5 @@ public interface TextAppUser
     float readFloat(String prompt);
     float readFloat(String prompt, float min, float max);
     int choose(String[] choices, String prompt);
+    List<String> getCommand(String prompt);
 }

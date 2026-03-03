@@ -3,6 +3,9 @@ package dk.ek.evu.vpf26.txtadv.user.impl;
 import dk.ek.evu.vpf26.txtadv.user.TextAppUser;
 import dk.ek.evu.vpf26.txtadv.user.TextUser;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TextAppUserImpl implements TextAppUser
 {
     private final TextUser user;
@@ -117,5 +120,13 @@ public class TextAppUserImpl implements TextAppUser
         println();
         int choice = readInt(prompt, 1, choices.length);
         return choice - 1;
+    }
+
+    @Override
+    public List<String> getCommand(String prompt)
+    {
+        String line = readLine(prompt);
+        String[] array = line.split("\\s+");
+        return List.of(array);
     }
 }
