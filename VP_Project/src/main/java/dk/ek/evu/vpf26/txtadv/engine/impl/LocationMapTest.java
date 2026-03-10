@@ -12,7 +12,7 @@ public class LocationMapTest
         LocationMapBuilder builder = null;
         builder.addLocation(1, 0, 0, "A", "Location A");
         builder.addLocation(1, 1, 0, "B", "Location B");
-        builder.addLocation(0, 1, 0, "Ć", "Location C");
+        builder.addLocation(0, 1, 0, "C", "Location C");
         builder.addLocation(2, 1, 0, "D", "Location D");
         builder.addLocation(1, 1, 1, "E", "Location E");
         LocationMap lm = builder.build();
