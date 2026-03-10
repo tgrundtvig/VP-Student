@@ -8,5 +8,13 @@ public interface Actor
 
     Location getCurrentLocation();
 
+    void setCurrentLocation(Location location);
+
+    void addItem(Item item);
+
+    void removeItem(Item item);
+
+    boolean hasItem(Item item);
+
     List<Item> getItems();
 }

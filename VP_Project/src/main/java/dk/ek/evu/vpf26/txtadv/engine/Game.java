@@ -14,16 +14,6 @@ public interface Game
 
     void onTurnEnd(int turn);
 
-
-
-
-
-    Player getCurrentPlayer();
-
-    Player getWinner();
-
-
-
     List<Player> getPlayers();
 
     List<NPC> getNPCs();
