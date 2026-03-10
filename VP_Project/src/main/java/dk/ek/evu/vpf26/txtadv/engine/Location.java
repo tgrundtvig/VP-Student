@@ -1,6 +1,6 @@
 package dk.ek.evu.vpf26.txtadv.engine;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Location
 {
@@ -16,9 +16,9 @@ public interface Location
 
     boolean removeItem(Item item);
 
-    List<Actor> getActors();
+    Set<Actor> getActors();
 
-    List<Item> getItems();
+    Set<Item> getItems();
 
-    Location getNeigbour(Direction direction);
+    Location getNeighbour(Direction direction);
 }
