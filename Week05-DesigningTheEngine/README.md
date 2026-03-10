@@ -42,4 +42,24 @@ Come prepared with opinions. There are no wrong answers, but you need to be able
 
 ## Post-Class Work
 
-To be announced after class.
+**Estimated time: 60-90 minutes**
+
+1. **[Reading: The Builder Pattern](post-class/reading.md)** (~15 minutes)
+   - Names the pattern we used with `LocationMapBuilder`
+   - Why builders exist and where you see them in real software
+   - Connection to interface-first design
+
+2. **[Exercise 1: Implement SimpleActor](post-class/exercises/exercise-1-simple-actor.md)** (~30 minutes)
+   - Implement the `Actor` interface as a concrete class
+   - Practice the patterns from `SimpleLocation` (collections, unmodifiable returns)
+   - You'll need this for next week
+
+3. **[Exercise 2: Flesh Out Item](post-class/exercises/exercise-2-flesh-out-item.md)** (~20 minutes)
+   - The `Item` interface is empty — figure out what it needs
+   - Discover methods from usage, not guessing
+   - Implement a `SimpleItem`
+
+4. **[Exercise 3: Design a LookCommand](post-class/exercises/exercise-3-look-command.md)** (~25 minutes, stretch)
+   - Connect Week 04's Command pattern to Week 05's engine
+   - Describe the player's current location, items, actors, and exits
+   - Preview the "wiring problem" we'll solve next week
