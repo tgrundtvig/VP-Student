@@ -58,6 +58,11 @@ public class LocationMapTest
         {
             throw new RuntimeException("Expected B, but got:" + b.name());
         }
+
+
+
         IO.println("Everything seems to work as expected!");
+
+
     }
 }

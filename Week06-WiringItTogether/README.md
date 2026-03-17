@@ -31,14 +31,17 @@ Complete these before class, in order:
 
 ## What Happens in Class
 
-In class, we will wire the game together:
+In class, we will work through the Factory and Builder patterns together:
 
-- Implement `takeTurn()` for a human player using `TextAppUser` and `CommandRegistry`
-- Implement basic commands (look, move, take, drop, inventory) against the engine interfaces
-- Build a `Game` implementation that sets up a small world and runs it
-- Run the game loop and play the text adventure for the first time
+1. **[Reading: The Factory Pattern](in-class/reading.md)** (~15 minutes)
+   - What factories are and why they matter
+   - Static factory methods vs factory interfaces
+   - How Factory and Builder patterns work together
 
-This is where all the design work pays off. The interfaces guide the implementation — if the design is good, the code writes itself.
+2. **[Exercises: Factory and Builder Patterns](in-class/exercises.md)** (~60 minutes)
+   - Five graduated exercises that build on each other
+   - Start by creating items manually, end with Factory + Builder composition
+   - Code from scratch — no starter code
 
 ## Post-Class Work
 
