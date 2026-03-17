@@ -8,6 +8,64 @@ Start from scratch. No starter code needed.
 
 ---
 
+## Java Records — A Quick Introduction
+
+In these exercises you'll use **records**, a Java feature for creating simple data classes. A record gives you a class with fields, a constructor, getters, `equals()`, `hashCode()`, and `toString()` — all generated automatically.
+
+Here's a regular class compared to the equivalent record:
+
+```java
+// As a class — you write all of this yourself:
+public class Point {
+    private final int x;
+    private final int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int x() { return x; }
+    public int y() { return y; }
+
+    // plus equals(), hashCode(), toString()...
+}
+
+// As a record — one line, same result:
+public record Point(int x, int y) {}
+```
+
+The parameters in the record declaration (`int x, int y`) become:
+- **Private final fields** (immutable — cannot be changed after creation)
+- **A constructor**: `new Point(3, 5)`
+- **Accessor methods** named after the fields: `point.x()`, `point.y()`
+- **`equals()`**, **`hashCode()`**, and **`toString()`** — generated automatically
+
+Records can also implement interfaces. When they do, you may need to provide the method bodies yourself:
+
+```java
+public interface Named {
+    String name();
+    String description();
+}
+
+// The record parameter 'name' automatically satisfies the name() method.
+// But description() needs an explicit implementation:
+public record Pet(String name, String species) implements Named {
+    public String description() {
+        return name + " the " + species;
+    }
+}
+```
+
+If a record parameter has the **same name** as an interface method, the generated accessor satisfies it automatically. For methods that don't match a parameter, you write the body yourself.
+
+**When to use records**: When you need a simple, immutable data carrier. Think of them as "a named tuple with types."
+
+**When NOT to use records**: When you need mutable state, inheritance (records can't extend other classes), or complex construction logic — that's where classes and builders come in (Exercise 4).
+
+---
+
 ## Exercise 1: Creating Items by Hand (~10 minutes)
 
 ### Goal
@@ -31,6 +89,8 @@ public interface Item {
 - `GoldCoin(int amount)` — name: `"Gold Coin"`, description: includes the amount, value: the amount
 - `HealthPotion(int healAmount)` — name: `"Health Potion"`, description: mentions the heal amount, value: `healAmount * 2`
 - `IronSword()` — name: `"Iron Sword"`, description: `"A sturdy iron sword"`, value: `50`
+
+**Hint:** `GoldCoin` has one parameter (`amount`) but three interface methods to satisfy. The `amount` parameter doesn't match any interface method name, so you'll need to write all three method bodies. Think about which value each method should return.
 
 **Step 3** — In a `main` method, create a `List<Item>` containing:
 
@@ -161,12 +221,20 @@ When items grow beyond a few fields, record constructors become painful. Use the
 
 ### The problem
 
-Your items have evolved. They now need more attributes: **name, description, value, weight, damage, armor, durability**. A record with seven parameters is hard to read and easy to get wrong:
+Your items have evolved. They now need more attributes: **name, description, value, weight, damage, armor, durability**. You could define a record with seven parameters, but it quickly becomes hard to read:
 
 ```java
-// What is 5? What is 20? What is that 0?
+// A record with many parameters — what is 5? What is 20? What is that 0?
+public record DetailedItem(String name, String description, int value,
+                           int weight, int damage, int armor,
+                           int durability) implements Item {}
+
+// Creating one forces you to specify ALL fields, even when most are zero:
 new DetailedItem("Iron Sword", "A sturdy sword", 50, 5, 20, 0, 100);
+new DetailedItem("Health Potion", "Restores health", 25, 1, 0, 0, 1);
 ```
+
+Records are great for simple data with a few fields. But when you have many fields — especially optional ones — a different approach works better.
 
 ### What to build
 
