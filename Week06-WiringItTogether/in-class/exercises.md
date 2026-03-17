@@ -62,7 +62,7 @@ If a record parameter has the **same name** as an interface method, the generate
 
 **When to use records**: When you need a simple, immutable data carrier. Think of them as "a named tuple with types."
 
-**When NOT to use records**: When you need mutable state, inheritance (records can't extend other classes), or complex construction logic — that's where classes and builders come in (Exercise 4).
+**When NOT to use records**: When you need mutable state, inheritance (records can't extend other classes), or when you need to assemble a complex object from many parts — that's where classes and builders come in (Exercise 4).
 
 ---
 
@@ -213,86 +213,83 @@ You see two different sets of items — basic and rare — printed from the same
 
 ---
 
-## Exercise 4: Builder for Complex Items (~15 minutes)
+## Exercise 4: Builder for Composite Objects (~15 minutes)
 
 ### Goal
 
-When items grow beyond a few fields, record constructors become painful. Use the Builder pattern to handle complex construction.
+Use the Builder pattern to assemble a complex object from simpler parts — the same way `LocationMapBuilder` assembles a map from locations.
 
-### The problem
+### The pattern
 
-Your items have evolved. They now need more attributes: **name, description, value, weight, damage, armor, durability**. You could define a record with seven parameters, but it quickly becomes hard to read:
+The Builder pattern is about **composing complex objects from simpler pieces**. You've already seen this: `LocationMapBuilder` takes locations one at a time via `addLocation()`, then `build()` computes all the neighbour relationships and returns a finished, fully-wired `LocationMap`. The caller never touches the wiring logic.
 
-```java
-// A record with many parameters — what is 5? What is 20? What is that 0?
-public record DetailedItem(String name, String description, int value,
-                           int weight, int damage, int armor,
-                           int durability) implements Item {}
-
-// Creating one forces you to specify ALL fields, even when most are zero:
-new DetailedItem("Iron Sword", "A sturdy sword", 50, 5, 20, 0, 100);
-new DetailedItem("Health Potion", "Restores health", 25, 1, 0, 0, 1);
-```
-
-Records are great for simple data with a few fields. But when you have many fields — especially optional ones — a different approach works better.
+The key is that `build()` does real work — it doesn't just store what you gave it, it *assembles, computes, and validates*.
 
 ### What to build
 
-**Step 1** — Extend your `Item` interface with new methods:
+You're going to build treasure chests for the game. A chest is a composite object: it contains items, may have a trap, and can be locked. Instead of constructing all of this by hand, a builder will assemble it step by step.
+
+**Step 1** — Define a `TreasureChest` interface:
 
 ```java
-int weight();
-int damage();
-int armor();
-int durability();
+public interface TreasureChest {
+    List<Item> items();
+    int totalValue();
+    boolean isTrapped();
+    String trapType();
+    boolean isLocked();
+    int lockDifficulty();
+}
 ```
 
-**Step 2** — Create an `ItemBuilder` class with a fluent API. The builder should:
-
-- Store each attribute as a private field
-- Have sensible defaults: `weight = 1`, `damage = 0`, `armor = 0`, `durability = 100`
-- Return `this` from each setter method (enabling method chaining)
-- Have a `build()` method that returns an `Item`
-
-You will need a concrete class (not a record) to hold the built item, since records require all fields in the constructor.
-
-**Step 3** — Build at least three items using the builder, each with a different combination of attributes:
+**Step 2** — Create a `TreasureChestBuilder` class:
 
 ```java
-Item sword = new ItemBuilder()
-    .name("Iron Sword")
-    .description("A sturdy iron sword")
-    .value(50)
-    .weight(5)
-    .damage(20)
-    .durability(100)
+public class TreasureChestBuilder {
+    // fields to accumulate state
+
+    public TreasureChestBuilder addItem(Item item) { ... }
+    public TreasureChestBuilder trap(String trapType) { ... }
+    public TreasureChestBuilder lock(int difficulty) { ... }
+    public TreasureChest build() { ... }
+}
+```
+
+The `build()` method should:
+- **Compute** `totalValue` by summing the value of all added items
+- **Validate** that at least one item was added (throw `IllegalStateException` if not — an empty chest makes no sense)
+- **Create** an immutable `TreasureChest` with all the assembled state
+
+You will need a concrete class that implements `TreasureChest` to hold the built result. The builder creates this internally — the caller never sees it.
+
+**Step 3** — Build several chests in `main` using your `ItemFactory` from Exercise 2:
+
+```java
+TreasureChest simpleChest = new TreasureChestBuilder()
+    .addItem(ItemFactory.goldCoin(50))
+    .addItem(ItemFactory.healthPotion(25))
     .build();
 
-Item shield = new ItemBuilder()
-    .name("Wooden Shield")
-    .description("A basic wooden shield")
-    .value(30)
-    .armor(10)
-    .build();  // uses defaults for weight, damage, durability
-
-Item potion = new ItemBuilder()
-    .name("Health Potion")
-    .description("Restores 50 health")
-    .value(25)
-    .build();  // a potion has no damage, armor, etc.
+TreasureChest trappedChest = new TreasureChestBuilder()
+    .addItem(ItemFactory.goldCoin(200))
+    .addItem(ItemFactory.ironSword())
+    .addItem(ItemFactory.healthPotion(50))
+    .trap("Poison Dart")
+    .lock(5)
+    .build();
 ```
 
-Print each item with all its attributes.
+Print each chest: how many items, total value, trapped/locked status.
 
 ### Verify
 
-Each item prints with the correct attributes. Items where you didn't specify damage/armor/etc. show the default values.
+Chests print with correct item counts, computed total values, and trap/lock information. The `totalValue` is calculated by `build()`, not passed in by the caller.
 
 ### Think about
 
-- Compare the seven-argument constructor with the builder version. Which one can you read without checking the parameter order?
-- What would you need to change to add a new attribute (e.g., `rarity`)? How many files need updating?
-- How does this compare to `LocationMapBuilder` from Week 05? What's similar? What's different?
+- Compare this to building a `LocationMap`: you add locations, then `build()` wires up neighbours. Here you add items, then `build()` computes total value and validates. In both cases, `build()` does the heavy lifting.
+- The caller never computes the total value or checks if the chest is valid — the builder handles it. What would go wrong if the caller had to do this themselves?
+- What other computed properties could `build()` derive? (e.g., total weight, the most valuable item, a danger rating based on trap + lock)
 
 ---
 
@@ -300,42 +297,60 @@ Each item prints with the correct attributes. Items where you didn't specify dam
 
 ### Goal
 
-Combine both patterns: the factory decides *what* to create, the builder handles *how*.
+Combine both patterns: the factory decides *what* goes in the chest, the builder handles *how* to assemble it.
 
 ### What to change
 
-**Step 1** — Update your `TreasureFactory` implementations (from Exercise 3) to use `ItemBuilder` internally:
+**Step 1** — Add a `createChest()` method to your `TreasureFactory` interface:
 
 ```java
-public class BasicTreasureFactory implements TreasureFactory {
-    public Item createWeapon() {
-        return new ItemBuilder()
-            .name("Iron Sword")
-            .description("A sturdy iron sword")
-            .value(50)
-            .weight(5)
-            .damage(20)
-            .durability(100)
-            .build();
-    }
-    // ... createCoin() and createPotion() similarly
+public interface TreasureFactory {
+    Item createCoin();
+    Item createPotion();
+    Item createWeapon();
+    TreasureChest createChest();
 }
 ```
 
-**Step 2** — Do the same for `RareTreasureFactory`, with better attribute values (higher damage, better armor, etc.).
+**Step 2** — In `BasicTreasureFactory`, implement `createChest()` using the builder:
 
-**Step 3** — Run your `fillChest` method from Exercise 3 with both factories. The output should now show detailed items with all their attributes.
+```java
+public TreasureChest createChest() {
+    return new TreasureChestBuilder()
+        .addItem(createCoin())
+        .addItem(createPotion())
+        .build();
+}
+```
+
+Notice how `createChest()` reuses the factory's own `createCoin()` and `createPotion()` methods — the factory is consistent with itself.
+
+**Step 3** — In `RareTreasureFactory`, build a more elaborate chest:
+
+```java
+public TreasureChest createChest() {
+    return new TreasureChestBuilder()
+        .addItem(createCoin())
+        .addItem(createWeapon())
+        .addItem(createPotion())
+        .trap("Poison Dart")
+        .lock(8)
+        .build();
+}
+```
+
+**Step 4** — In `main`, create chests from both factories and print their contents.
 
 ### Verify
 
-Both factories produce items through the builder. The `fillChest` method still works without any changes — it doesn't know or care that the factories now use a builder internally.
+Both factories produce fully assembled chests. A basic chest has simple items and no trap. A rare chest has better items, a trap, and a lock. The code in `main` doesn't know which factory it's using or how the chest is assembled.
 
 ### Think about
 
-- The factory decides *which* attributes to use. The builder handles *how* to construct the item. Neither needs to change when the other changes.
-- To add a new item tier, you write a new factory class. The builder and `fillChest` stay the same.
-- To add a new attribute to all items, you update the builder and the `Item` interface. The factories add one line each. `fillChest` doesn't change.
-- **This is the power of separation of concerns.** Each piece of code has one job, and changes are localized.
+- The factory decides *what* items go in the chest. The builder handles *how* to assemble it (computing total value, validating, etc.). Neither needs to change when the other changes.
+- To add a new tier of chests (e.g., "cursed"), you write a new factory class. The builder stays the same.
+- To add new chest features (e.g., a "mimic" flag), you update the builder and the `TreasureChest` interface. Existing factories don't break — they just don't use the new feature yet.
+- **This is the same composition everywhere**: `LocationMapBuilder` builds maps from locations. `TreasureChestBuilder` builds chests from items. The factory decides which items and configuration to use.
 
 ---
 
@@ -343,20 +358,14 @@ Both factories produce items through the builder. The `fillChest` method still w
 
 If you finish early, try one or more of these extensions.
 
-### Bonus A: Validation
+### Bonus A: Richer Computation in `build()`
 
-Add validation to your `ItemBuilder`. The `build()` method should throw an `IllegalStateException` if:
-
-- `name` is null or empty
-- `value` is negative
-- `durability` is zero or negative
-
-Try building an item without a name. Does it fail with a clear error message?
+Add more computed properties to `TreasureChest`: the name of the most valuable item, the average item value, or a "danger rating" (e.g., 0 = untrapped/unlocked, higher = more dangerous). These are all derived from the parts — the caller never sets them directly.
 
 ### Bonus B: Builder Interface
 
-Extract an `ItemBuilder` interface from your concrete builder class. Then create an alternative implementation — perhaps a `DebugItemBuilder` that prints each attribute as it's set (useful for troubleshooting). Your factories should work with the builder interface, not the concrete class.
+Extract a `TreasureChestBuilder` interface from your concrete builder class. Now someone could write a `DebugTreasureChestBuilder` that logs every item added, or a `LimitedTreasureChestBuilder` that caps the number of items. The factory works with the builder interface, not the concrete class.
 
-### Bonus C: Parameterized Factory
+### Bonus C: Nested Builders
 
-Add a `createWeapon(String material)` method to your `TreasureFactory` interface. The factory uses the material parameter to look up appropriate damage, weight, and durability values. For example, `"wood"` gives low damage but high durability, while `"glass"` gives high damage but low durability.
+What if a chest can contain other chests? Add an `addChest(TreasureChest innerChest)` method to the builder. The `build()` method now computes `totalValue` recursively — including the value of items inside nested chests. This is composition at its deepest.

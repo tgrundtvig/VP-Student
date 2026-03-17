@@ -124,11 +124,13 @@ You now know two creation patterns. They solve different problems:
 
 | | Factory | Builder |
 |---|---------|---------|
-| **Problem it solves** | *Which* object to create | *How* to construct a complex object |
-| **How you use it** | Call one method, get a finished object | Call multiple methods, then `build()` |
-| **Example** | `factory.createHealing()` | `builder.name("...").value(50).build()` |
-| **What it hides** | Which concrete class is created | The multi-step construction process |
-| **Best when** | You have families of related objects | An object has many optional attributes |
+| **Problem it solves** | *Which* object to create | *How* to assemble a complex object from parts |
+| **How you use it** | Call one method, get a finished object | Add pieces step by step, then `build()` assembles the result |
+| **Example** | `factory.createHealing()` | `builder.addItem(sword).addItem(potion).trap("dart").build()` |
+| **What it hides** | Which concrete class is created | The assembly, wiring, and validation logic |
+| **Best when** | You have families of related objects | An object is composed of smaller pieces |
+
+Think about `LocationMapBuilder`: you call `addLocation()` several times to add the pieces, then `build()` does the real work — computing neighbour relationships and wiring everything together. The caller adds the parts; the builder assembles the structure.
 
 They're not competitors — they solve different problems. And they work beautifully together.
 
@@ -139,25 +141,25 @@ They're not competitors — they solve different problems. And they work beautif
 What happens when a factory uses a builder internally?
 
 ```java
-public class RarePotionFactory implements PotionFactory {
-    public Item createHealing() {
-        return new ItemBuilder()
-            .name("Rare Healing Potion")
-            .description("A shimmering golden potion")
-            .value(150)
-            .weight(1)
-            .healAmount(100)
+public class RareTreasureFactory implements TreasureFactory {
+    public TreasureChest createChest() {
+        return new TreasureChestBuilder()
+            .addItem(createCoin())
+            .addItem(createWeapon())
+            .addItem(createPotion())
+            .trap("Poison Dart")
+            .lock(8)
             .build();
     }
 }
 ```
 
-The factory decides *what* to create — a rare healing potion with specific attributes. The builder handles *how* to construct it — step by step, with sensible defaults for attributes you don't specify.
+The factory decides *what* goes in the chest — which items, which trap, what lock level. The builder handles *how* to assemble it — computing total value, validating, creating the final immutable object.
 
 This separation means:
 
-- **Adding a new factory** is easy — just pick different attribute values
-- **Adding a new attribute** to items is easy — update the builder
+- **Adding a new factory** is easy — just pick different items and configuration
+- **Adding new chest features** is easy — update the builder
 - **Neither change affects the other**
 
 You'll practice this combination in the exercises.
@@ -183,7 +185,7 @@ Factories are everywhere in professional software:
 | **Factory pattern** | Centralize object creation behind a method or interface |
 | **Static factory method** | Simplest form — a class with creation methods |
 | **Factory interface** | The powerful form — creation strategy is swappable |
-| **Factory + Builder** | Factory decides *what* to create, builder handles *how* |
+| **Factory + Builder** | Factory decides *what* to create, builder assembles *how* |
 | **Interface-first** | Design the factory interface from the caller's needs |
 
 The Factory pattern is one of the most common patterns in professional software. Combined with the Builder pattern you learned last week, you now have two tools for managing how objects are created — while keeping the rest of your code clean and flexible.
