@@ -1,17 +1,18 @@
 package dk.ek.vp.homemadecollections.generic.impl;
 
 import dk.ek.vp.homemadecollections.first.StringList;
+import dk.ek.vp.homemadecollections.generic.GenericList;
 
 import java.util.Iterator;
 
-public class StringLinkedList implements StringList
+public class GenericLinkedList<E> implements GenericList<E>
 {
     private int curVersion;
-    private StringListNode first;
-    private StringListNode last;
+    private GenericListNode<E> first;
+    private GenericListNode<E> last;
     private int size;
 
-    public StringLinkedList()
+    public GenericLinkedList()
     {
         first = null;
         last = null;
@@ -27,9 +28,9 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public void addLast(String str)
+    public void addLast(E element)
     {
-        StringListNode newNode = new StringListNode(str);
+        GenericListNode<E> newNode = new GenericListNode<>(element);
         if(last == null)
         {
             first = newNode;
@@ -46,9 +47,9 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public void addFirst(String str)
+    public void addFirst(E element)
     {
-        StringListNode newNode = new StringListNode(str);
+        GenericListNode<E> newNode = new GenericListNode<>(element);
         if(first == null)
         {
             first = newNode;
@@ -65,13 +66,13 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public String removeLast()
+    public E removeLast()
     {
         if(last == null)
         {
             throw new RuntimeException("List is empty");
         }
-        StringListNode temp = last;
+        GenericListNode<E> temp = last;
         if(last.getPrev() == null)
         {
             first = null;
@@ -88,13 +89,13 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public String removeFirst()
+    public E removeFirst()
     {
         if(first == null)
         {
             throw new RuntimeException("List is empty");
         }
-        StringListNode temp = first;
+        GenericListNode<E> temp = first;
         if(first.getNext() == null)
         {
             first = null;
@@ -111,10 +112,10 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public String get(int index)
+    public E get(int index)
     {
         if(index < 0 || index >= size) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        StringListNode cur = first;
+        GenericListNode<E> cur = first;
         while(index > 0)
         {
             cur = cur.getNext();
@@ -124,16 +125,16 @@ public class StringLinkedList implements StringList
     }
 
     @Override
-    public Iterator<String> iterator()
+    public Iterator<E> iterator()
     {
-        return new  StringListIterator();
+        return new  GenericListIterator();
     }
 
-    private class StringListIterator implements Iterator<String>
+    private class GenericListIterator implements Iterator<E>
     {
-        StringListNode next;
+        GenericListNode<E> next;
 
-        public StringListIterator()
+        public GenericListIterator()
         {
             this.next = first;
         }
@@ -145,9 +146,9 @@ public class StringLinkedList implements StringList
         }
 
         @Override
-        public String next()
+        public E next()
         {
-            String res = next.getValue();
+            E res = next.getValue();
             next = next.getNext();
             return res;
         }

@@ -3,12 +3,13 @@ package dk.ek.vp.homemadecollections.generic;
 import dk.ek.vp.homemadecollections.first.StringList;
 import dk.ek.vp.homemadecollections.first.impl.StringLinkedList;
 import dk.ek.vp.homemadecollections.generic.impl.GenericArrayList;
+import dk.ek.vp.homemadecollections.generic.impl.GenericLinkedList;
 
 public class Demo
 {
     static void main()
     {
-        GenericList<String>  list = new GenericArrayList<>();
+        GenericList<String>  list = new GenericLinkedList<>();
         list.addLast("A");
         list.addLast("B");
         list.addLast("C");
