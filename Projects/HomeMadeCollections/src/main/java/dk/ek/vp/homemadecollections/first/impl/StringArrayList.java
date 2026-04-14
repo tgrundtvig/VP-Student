@@ -1,6 +1,6 @@
-package dk.ek.vp.homemadecollections.impl;
+package dk.ek.vp.homemadecollections.first.impl;
 
-import dk.ek.vp.homemadecollections.StringList;
+import dk.ek.vp.homemadecollections.first.StringList;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

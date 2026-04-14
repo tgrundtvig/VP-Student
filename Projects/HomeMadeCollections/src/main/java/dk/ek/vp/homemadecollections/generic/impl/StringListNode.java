@@ -1,4 +1,4 @@
-package dk.ek.vp.homemadecollections.impl;
+package dk.ek.vp.homemadecollections.generic.impl;
 
 public class StringListNode
 {

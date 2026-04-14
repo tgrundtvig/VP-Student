@@ -1,4 +1,4 @@
-package dk.ek.vp.homemadecollections;
+package dk.ek.vp.homemadecollections.first;
 
 public interface StringList extends Iterable<String>
 {
