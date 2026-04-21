@@ -1,5 +1,7 @@
 package dk.ek.vp;
 
+import java.util.List;
+
 public class Demo
 {
     static void main()
@@ -23,5 +25,11 @@ public class Demo
         NodePrinter printer = new NodePrinter();
         String s = printer.print(root);
         System.out.println(s);
+        Search search = new DepthFirstSearch();
+        List<Node> res = search.search(root, "file3");
+        for(Node n : res)
+        {
+            System.out.println(n.name());
+        }
     }
 }
