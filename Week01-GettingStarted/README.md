@@ -1,54 +1,48 @@
-# Week 01: Getting Started
+# Week 01: Getting Started — The Naive Approach
 
-## Learning Objectives
+**Date:** 3 February 2026
 
-After completing the pre-class work you will be able to:
+## What We Did In Class
 
-1. **Describe** what a text adventure game is and how rooms connect to each other
-2. **Explain** how objects can reference other objects to form a linked structure
-3. **Implement** a simple linked-node pattern (Waypoint/Trail)
-4. **Understand** the project-driven approach we use throughout this course
+This was our "naive coding" session. The goal was to *feel* what happens when you
+build software without thinking about design first.
 
-## Pre-Class Work
+We built a small combat simulator from scratch — a `Player`, a `Monster`, and a
+`CombatPlayerVSMonster` class that drives the fight. No interfaces, no separation
+of concerns, just code that works.
 
-Complete these before class:
+By the end you had a working program — and a sneaking suspicion that adding
+*one more thing* (a second kind of monster, a different player, a saved game,
+a test) would be painful. That suspicion is the whole point. We come back to it
+next week.
 
-1. **[Reading](pre-class/reading.md)** (~15 minutes)
-   - What this course is about and how it works
-   - The text adventure game we will build together
-   - How objects link to other objects
+## Code From This Session
 
-2. **[Exercises](pre-class/exercises/README.md)** (~30 minutes)
-   - Implement `Waypoint` and `Trail` classes
-   - Practice the "objects referencing objects" pattern
+📂 [`Projects/TextAdventure/`](../Projects/TextAdventure/) — the naive combat code.
 
-3. **[Verification](pre-class/verification.md)** (~5 minutes)
-   - Confirm you understood the reading
-   - Check that your exercises pass
+Key files to read:
+- `src/main/java/dk/ek/evu/vpf26/textadventure/Player.java`
+- `src/main/java/dk/ek/evu/vpf26/textadventure/Monster.java`
+- `src/main/java/dk/ek/evu/vpf26/textadventure/CombatPlayerVSMonster.java`
+- `src/test/java/...` — JUnit 5 tests we added afterwards
 
-**Estimated time: 45-60 minutes**
+## Catch-Up & Reinforcement Material
 
-## What Happens in Class
+Created after class to give a softer on-ramp for the "objects referencing objects"
+idea that the room/maze structure (built next week) relies on. Optional, but
+recommended if you felt the code went fast.
 
-In class we will build the first version of our text adventure game together:
+- **[Reading](pre-class/reading.md)** — what a text adventure is, how rooms link
+- **[Exercises](pre-class/exercises/README.md)** — implement `Waypoint` and `Trail`
+- **[Post-class reading: The Patterns Behind What We Built](post-class/reading.md)**
+- **[Post-class exercise 1: Bidirectional Waypoints](post-class/exercises/exercise-1-bidirectional-waypoints.md)**
+- **[Post-class exercise 2: Maze Explorer](post-class/exercises/exercise-2-maze-explorer.md)**
 
-- A `Room` class where rooms link to other rooms (just like your Waypoint exercise!)
-- A `Mace` (maze) and a factory that builds one
-- A `Player` that moves between rooms
-- A playable game by the end of the session
+## For The Exam
 
-## Post-Class Work
-
-**Estimated time: 45-60 minutes**
-
-1. **[Reading: The Patterns Behind What We Built](post-class/reading.md)** (~15 minutes)
-   - Names the object graph and reference semantics patterns
-   - Explains bidirectional linking and null as "no connection"
-
-2. **[Exercise 1: Bidirectional Waypoints](post-class/exercises/exercise-1-bidirectional-waypoints.md)** (~20 minutes)
-   - Extend Waypoint with `prev` links and a bidirectional `connect` method
-   - Walk a chain forward and backward
-
-3. **[Exercise 2: Maze Explorer](post-class/exercises/exercise-2-maze-explorer.md)** (~20 minutes)
-   - Design and build your own maze of 5+ rooms
-   - Navigate it with ScriptedTextIn
+Be able to:
+- Explain *why* the naive approach feels fine for tiny programs but breaks down
+  as soon as you need to change, test, or reuse the code.
+- Point at concrete examples in `Projects/TextAdventure` of code that is hard
+  to test or extend, and say why.
+- Argue that "it works" is not the same as "it is good code".

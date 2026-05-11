@@ -1,63 +1,68 @@
-# Week 06: Wiring It Together
+# Week 06: Wiring It Together — Factory, Builder & Records
 
-## Learning Objectives
+**Date:** 17 March 2026
 
-After completing the pre-class material and attending class, you will be able to:
+## What We Did In Class
 
-1. **Connect** separate subsystems (user I/O, commands, engine) into a working whole
-2. **Implement** the `Actor.takeTurn()` method for a human player using `TextAppUser` and `CommandRegistry`
-3. **Reason** about where dependencies belong — what each object needs to know and what it shouldn't
-4. **Run** the game loop with a real `Game` implementation and see the engine come to life
+This was a "patterns" session built around the engine code we already had.
+Three things landed:
 
-## Pre-Class Work
+1. **Factory pattern** — when an object's *creation* depends on choices the
+   caller shouldn't have to know about, hide it behind a factory. We went
+   through static factory methods, factory interfaces, and the situations
+   each one fits.
 
-**Estimated time: 45-60 minutes**
+2. **GoF Builder vs Bloch Builder** — we deliberately picked the
+   *Gang-of-Four* (compositional assembly) style, where the builder builds
+   one part at a time and returns a finished object, over Bloch's fluent
+   builder (which is mainly about constructor parameter names). The
+   `LocationMapBuilder` from Week 5 is GoF-style.
 
-Complete these before class, in order:
+3. **Java records** — Java's modern way to write immutable data carriers.
+   We used them for value-types like `LocationCoordinate` and contrasted
+   them with classic POJOs. The rule of thumb from this session:
+   **records for data, interfaces for behaviour**.
 
-1. **[Reading: The Wiring Problem](pre-class/reading.md)** (~20 minutes)
-   - We have all the pieces. How do they connect?
-   - Who creates what, and who passes what to whom?
-   - Thinking about dependency flow in a top-down design
+After class, a comprehensive design-patterns reference was added to
+`post-class/` covering all 23 GoF patterns plus MVC, Repository, and DI.
+Don't try to read it all at once — it's a long-term reference.
 
-2. **[The Pieces We Have](pre-class/the-pieces-we-have.md)** (~25 minutes)
-   - Inventory of every interface and implementation built so far
-   - A concrete exercise: sketch how a player's turn works, step by step
-   - Design questions to prepare for class
+## Code From This Session
 
-3. **[Verification Checklist](pre-class/verification.md)** (~5 minutes)
-   - Confirm you understand how the pieces relate
-   - Confirm you have a sketch of a player's turn
+The Factory/Builder/records material was largely conceptual and exercise-driven
+rather than landing as a single new project. The patterns are visible in the
+existing engine code:
 
-## What Happens in Class
+- 📂 [`VP_Project/.../engine/`](../VP_Project/src/main/java/dk/ek/evu/vpf26/txtadv/engine/)
+  — `LocationMapBuilder` (interface), `LocationCoordinate` (record)
+- 📂 [`VP_Project/.../engine/impl/`](../VP_Project/src/main/java/dk/ek/evu/vpf26/txtadv/engine/impl/)
+  — `SimpleLocationMapBuilder` (concrete builder)
 
-In class, we will work through the Factory and Builder patterns together:
+You will see another factory in Week 7's `GuessANumber` project
+(`PlayerFactory` / `PlayerFactoryImpl`).
 
-1. **[Reading: The Factory Pattern](in-class/reading.md)** (~15 minutes)
-   - What factories are and why they matter
-   - Static factory methods vs factory interfaces
-   - How Factory and Builder patterns work together
+## Material
 
-2. **[Exercises: Factory and Builder Patterns](in-class/exercises.md)** (~60 minutes)
-   - Five graduated exercises that build on each other
-   - Start by creating items manually, end with Factory + Builder composition
-   - Code from scratch — no starter code
+- **[Pre-class reading: The Wiring Problem](pre-class/reading.md)**
+- **[Pre-class: The Pieces We Have](pre-class/the-pieces-we-have.md)** —
+  inventory + design sketch
+- **[In-class reading: The Factory Pattern](in-class/reading.md)**
+- **[In-class exercises: Factory & Builder](in-class/exercises.md)** — five
+  graduated exercises
+- **[Post-class reading: Design Patterns — A Comprehensive Guide](post-class/reading.md)**
+  — long-term reference; all 23 GoF patterns + MVC, Repository, DI
+- **[Post-class exercises: One per pattern](post-class/exercises.md)**
+- **[Extra reading: Records and Why They Matter](extra-reading.md)**
 
-## Post-Class Work
+## For The Exam
 
-**Important: This is a long-term reference, not a one-week assignment.** The reading and exercises below cover all the major design patterns in software engineering. You are **not** expected to finish everything before next week. Read through the guide at your own pace, and work on the exercises that interest you over the coming weeks. There is no deadline — this material is here for you to learn from whenever you're ready.
-
-**For next week**, the only preparation is the [Week 07 pre-class work](../Week07-BringingTheGameToLife/README.md). The material below is independent of that.
-
-1. **[Reading: Design Patterns — A Comprehensive Guide](post-class/reading.md)** (~90-120 minutes)
-   - What design patterns are and where they come from (Gang of Four)
-   - All 23 classic patterns: Creational, Structural, and Behavioral
-   - Architectural patterns (MVC, Repository) and Dependency Injection
-   - Each pattern: the problem it solves, how it works, Java code examples, and where you've seen it
-   - This is a reference document — read it through once, then come back to individual patterns when you need them
-
-2. **[Exercises: Design Pattern Exercises](post-class/exercises.md)** (~20-30 minutes per exercise)
-   - One hands-on exercise for each of the 23 patterns from the reading
-   - Each exercise is self-contained — build a small system from scratch
-   - Every exercise follows the interface-first approach: define interfaces, write client code, then implement
-   - Pick the patterns that interest you most, or work through them in order — there is no expectation to do them all
+Be able to:
+- Define the **Factory pattern**. Distinguish static factory method, factory
+  class, and factory interface — give an example of when you'd pick each.
+- Define **records**: what they are, what they give you for free
+  (`equals`, `hashCode`, `toString`, accessor methods), and when to use them
+  over a regular class.
+- State the rule **"records for data, interfaces for behaviour"** and defend
+  it with examples.
+- Compare **Builder** (Week 05) to **Factory** (Week 06): which problem does
+  each solve? When would you combine them?

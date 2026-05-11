@@ -1,57 +1,64 @@
-# Week 04: Wishful Programming & The Command Pattern
+# Week 04: Wishful Programming — The Engine Interfaces
 
-## Learning Objectives
+**Date:** 3 March 2026
 
-After completing the pre-class material and attending class, you will be able to:
+## What We Did In Class
 
-1. **Apply** wishful programming: write code that uses interfaces before any implementation exists
-2. **Recognize** the Command pattern as a way to replace if-else chains with a map of named actions
-3. **Design** top-down: start with what you need, then fill in the details
-4. **Extend** a command-based system by adding new commands without modifying existing code
+This was the most important conceptual session of the course so far.
 
-## Pre-Class Work
+We sat down and **designed the entire game engine using only interfaces** —
+not a single implementation, not even a `class` keyword in sight. The technique
+is called **wishful programming**: write the code you *wish* you had, name the
+types you *wish* existed, and only later figure out how to build them.
 
-**Estimated time: 45-60 minutes**
+What we designed (in `VP_Project/.../engine/`):
+- **`Game`** — the top-level game object
+- **`GameLoop`** — drives turns
+- **`Location`** — what a player stands in (renamed from `Room`)
+- **`LocationMap`** — the world
+- **`Direction`** — N/S/E/W (enum)
+- **`Actor`** — anything that takes turns (players, NPCs)
+- **`Player`**, **`NPC`** — specialised actors
+- **`Item`** — things you can pick up
 
-Complete these before class, in order:
+We also seeded the **Command pattern** infrastructure in `user/command/`:
+- **`Command`** — the unit of action
+- **`CommandRegistry`** — looks commands up by name
+- A demo set in `command/demo/` (`WalkCommand`, `JumpCommand`, `RunCommand`)
 
-1. **[Reading: Wishful Programming](pre-class/reading.md)** (~20 minutes)
-   - What it means to write code against interfaces that don't exist yet
-   - How top-down design makes implementation "fall out" naturally
-   - Why this is the core methodology of this course
+Everything is interfaces. The implementations come later.
 
-2. **[Exercises: Notification System](pre-class/exercises/README.md)** (~25 minutes)
-   - Experience the "implement last" step
-   - The service code is already written — you make it work by implementing the leaf nodes
-   - Run the provided tests to verify your work
+The lesson: when you design top-down, the interface design *guides* the
+implementation. Implementation becomes "fill in the blanks" rather than
+"figure out the architecture".
 
-3. **[Verification Checklist](pre-class/verification.md)** (~5 minutes)
-   - Confirm you understood the reading
-   - Confirm your exercises pass
+## Code From This Session
 
-## What Happens in Class
+📂 [`VP_Project/.../engine/`](../VP_Project/src/main/java/dk/ek/evu/vpf26/txtadv/engine/)
+— all the engine interfaces (no `impl/` content yet at the end of this session)
 
-In class, we will refactor `Player.moveInMace()` from a long if-else chain into a Command pattern:
+📂 [`VP_Project/.../user/command/`](../VP_Project/src/main/java/dk/ek/evu/vpf26/txtadv/user/command/)
+— `Command`, `CommandRegistry`, and demo commands
 
-- Define a `Command` interface
-- Create individual command classes (NorthCommand, QuitCommand, etc.)
-- Replace the if-else chain with a `Map<String, Command>`
-- See how adding new commands becomes trivial
+## Material
 
-The pre-class exercise gives you a head start by practicing the "implement last" workflow.
+- **[Pre-class reading: Wishful Programming](pre-class/reading.md)** — the
+  methodology in detail
+- **[Pre-class exercises: Notification System](pre-class/exercises/README.md)** —
+  experience "implement last"
+- **[In-class material](in-class/)** — what we walked through together
+- **[Post-class reading: The Command Pattern](post-class/reading.md)**
+- **[Post-class exercise 1: Design Task Tracker Interfaces](post-class/exercises/exercise-1-design-task-tracker-interfaces.md)**
+- **[Post-class exercise 2: Wishful Workflow](post-class/exercises/exercise-2-wishful-workflow.md)**
+- **[Extra reading: Wishful Programming as Methodology](extra-reading.md)**
 
-## Post-Class Work
+## For The Exam
 
-**Estimated time: 60-90 minutes**
-
-1. **[Reading: The Command Pattern](post-class/reading.md)** (~20 minutes)
-   - Names the pattern we built in class
-   - Connects it to wishful programming and the Open-Closed Principle
-
-2. **[Exercise 1: Design Task Tracker Interfaces](post-class/exercises/exercise-1-design-task-tracker-interfaces.md)** (~35 minutes)
-   - Pure interface design — no implementation
-   - Practice the "design first" step on a fresh domain
-
-3. **[Exercise 2: Wishful Workflow](post-class/exercises/exercise-2-wishful-workflow.md)** (~35 minutes)
-   - Write working code against the interfaces you just designed
-   - Experience the full methodology end-to-end
+Be able to:
+- Define **wishful programming** in your own words.
+- Walk through the engine interfaces and explain *why* each one exists —
+  what would break if you collapsed two of them into one, or split one in two.
+- Explain the **Command pattern** using `Command` + `CommandRegistry` as your
+  example. What problem does it solve compared to a giant `if/else` chain?
+- Argue for **interface-first design** with a concrete example from your
+  exam project.

@@ -1,46 +1,75 @@
-# Week 07: Bringing the Game to Life
+# Week 07: Guess-a-Number — Interface-First in Small Scope
 
-## Learning Objectives
+**Date:** 24 March 2026
 
-After completing the pre-class material and attending class, you will be able to:
+> Folder name is "BringingTheGameToLife" because that was the *planned* topic.
+> With only 3 students in class we pivoted to a smaller, more focused exercise.
+> Pre-class material in this folder reflects the original wiring plan and is
+> still useful reference for the exam projects — but **what we actually did in
+> class was build a guess-a-number game**.
 
-1. **Implement** the missing pieces of the game engine (Game, Player, commands)
-2. **Connect** the subsystems (user I/O, commands, engine) into a running game
-3. **Apply** design patterns naturally (Command, Factory, DI, Template Method) as they emerge from implementation
-4. **Run** and play the text adventure for the first time
+## What We Did In Class
 
-## Pre-Class Work
+With a small group present we did the methodology of the whole course
+in miniature, on a fresh problem domain: a number-guessing game.
 
-**Estimated time: 45-60 minutes**
+What we designed (interface-first, top-down):
+- **`GuessANumberGame`** — the top-level game
+- **`Guesser`** — anything that produces guesses
+- **`Thinker`** — anything that thinks of a number and rates guesses
+- **`Feedback`** — record returned per guess (higher / lower / correct)
+- **`PlayerFactory`** — factory for making `Guesser`/`Thinker` pairs
 
-Complete these before class, in order:
+What we implemented:
+- **`HumanGuesser`**, **`HumanThinker`** — driven via `TextAppUser`
+- **`ComputerGuesser`**, **`ComputerThinker`** — automatic binary-search
+  guesser, random number thinker
+- **`GuessANumberGameImpl`** — runs the game loop
+- **`PlayerFactoryImpl`** — produces the right combination
 
-1. **[Reading: From Design to Implementation](pre-class/reading.md)** (~15 minutes)
-   - We have all the interfaces. Now it's time to make the game run.
-   - Implementation strategy: vertical slices, not bottom-up
-   - Who creates what? The "factory floor" concept
-   - What's needed for the minimum playable game
+Then we played human-vs-computer, computer-vs-human, computer-vs-computer
+to show that *the game loop doesn't care* which combination it gets.
 
-2. **[Exercise: The Implementation Inventory](pre-class/inventory.md)** (~10 minutes)
-   - Go through every interface in the project and check its status
-   - For each missing implementation, write one sentence about what it needs to do
-   - Star the ones needed for the minimum playable game
+That is the punchline of interface-first design. Once the interfaces are
+right, the implementations become interchangeable.
 
-3. **[Exercise: Mapping Dependencies](pre-class/dependencies.md)** (~15 minutes)
-   - For each missing piece, figure out what it depends on
-   - What does it receive through its constructor? What does it need to do?
-   - Draw the creation order: what must exist before what?
+## Code From This Session
 
-4. **[Exercise: Planning the First Playable](pre-class/first-playable.md)** (~10 minutes)
-   - List the minimum commands needed for a functional (not fun) game
-   - Sketch a small world on paper
-   - Write the creation order for main() or initialize()
-   - Trace one complete turn through the interfaces
+📂 [`Projects/GuessANumber/`](../Projects/GuessANumber/) — the whole project
 
-## What Happens in Class
+Key files:
+- `Guesser.java`, `Thinker.java`, `Feedback.java`, `PlayerFactory.java`,
+  `GuessANumberGame.java` — interfaces
+- `impl/HumanGuesser.java`, `impl/HumanThinker.java`,
+  `impl/ComputerGuesser.java`, `impl/ComputerThinker.java` — implementations
+- `impl/GuessANumberGameImpl.java`, `impl/PlayerFactoryImpl.java`
+- `RunDemo.java` — main entry point
+- The shared `user/` package: `TextUser`, `TextAppUser`, `TerminalUser`,
+  `TextAppUserImpl` (reused from Week 03's design)
 
-We implement the game together — starting with the minimum playable version and adding commands one at a time. By the end of the session, you will have a running text adventure that you can actually play.
+## Material — Original Wiring Plan (still useful)
 
-## Post-Class Work
+These describe the *planned* "bring the text adventure to life" content. We
+deferred that to later sessions, but the reading is still valuable.
 
-To be announced after class.
+- **[Pre-class reading: From Design to Implementation](pre-class/reading.md)**
+- **[Pre-class: Implementation Inventory](pre-class/inventory.md)**
+- **[Pre-class: Mapping Dependencies](pre-class/dependencies.md)**
+- **[Pre-class: Planning the First Playable](pre-class/first-playable.md)**
+
+## Material — What We Actually Built
+
+- **[Post-class: Guess-a-Number exercise](post-class/)** — extend the project
+- **[Extra reading: Interface-First on a New Domain](extra-reading.md)**
+
+## For The Exam
+
+Be able to:
+- Walk through the **`GuessANumber` interface design** and explain *why*
+  splitting into `Guesser` + `Thinker` + `Feedback` is better than one
+  `Game` class with everything inside.
+- Show that **the same game loop runs all four combinations** (H-vs-H,
+  H-vs-C, C-vs-H, C-vs-C) without changing `GuessANumberGameImpl`. Explain
+  why that's the payoff of interface-first design.
+- Apply the same exercise to a brand-new problem domain (e.g. tic-tac-toe,
+  rock-paper-scissors) on the spot.
