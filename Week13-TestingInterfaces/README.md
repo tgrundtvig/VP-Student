@@ -69,10 +69,71 @@ for a given interface. We'll look at:
 The point isn't to outsource testing. It's to use the AI as a fast first
 draft and then *understand* what's there.
 
+### Going further — patterns we used in TestFun
+
+Three extensions to the abstract-test-class pattern that came out of the
+in-class session, all visible in `Projects/TestFun/`:
+
+**`@Nested` to group tests.** Inner classes annotated `@Nested` group
+related tests into a tree. `BankAccountTest` uses `Construction`,
+`Deposit`, `Withdraw`, `Transfer`, and `Scenarios` — the IntelliJ runner
+shows each as its own folder.
+
+**`@Nested` + inheritance to *compose* contract tests across layers.**
+`BankTest` has bank-level tests of its own *and* a `@Nested` inner class
+that extends `BankAccountTest`:
+
+```java
+public abstract class BankTest {
+    protected abstract Bank createBank();
+
+    @Test void openAccountReturnsDifferentNumbersOnRepeatedCalls() { ... }
+    // ...other bank-level tests
+
+    @Nested
+    @DisplayName("Accounts produced by this bank")
+    class ProducedAccounts extends BankAccountTest {
+        @Override
+        protected BankAccount createBankAccount() {
+            Bank bank = createBank();
+            return bank.getAccount(bank.openAccount());
+        }
+    }
+}
+```
+
+Every `Bank` implementation that extends `BankTest` automatically runs the
+**full `BankAccount` contract** against the accounts it produces. The
+HashMap, file, and H2 banks each inherit ~24 contract tests for free.
+Layered interfaces produce layered tests.
+
+**`@ParameterizedTest` for cross-impl matrix testing.** `TransfersTest`
+enumerates pairs of bank implementations and runs the same scenario
+against each pair:
+
+```java
+@ParameterizedTest(name = "{0} -> {1}")
+@MethodSource("bankPairs")
+void moneyMovesBetweenBanks(Supplier<Bank> src, Supplier<Bank> dest) { ... }
+```
+
+Three transfer scenarios × seven bank pairs = 21 test runs from three
+methods. Each pair shows up as its own row in the test runner.
+
 ## Code From This Session
 
-To be added after class. Will live in
-`Projects/HomeMadeCollections/src/test/java/...`
+The full project lives at `Projects/TestFun/`:
+
+- `BankAccount` interface with `default transferTo(...)`
+- `BankAccountReferenceImpl` — in-memory reference implementation
+- `Bank` interface — open accounts, retrieve by number
+- Three `Bank` implementations: `HashMapBank`, `FileBank` (Java
+  `Properties` file), `H2Bank` (in-memory H2 via JDBC)
+- Abstract `BankAccountTest` with `@Nested` groups
+- Abstract `BankTest` with `@Nested ProducedAccounts extends BankAccountTest`
+- `TransfersTest` — `@ParameterizedTest` matrix across cross-impl bank pairs
+
+`mvn test` (under JDK ≥ 25) runs **132 tests**.
 
 ## Material
 
@@ -90,3 +151,10 @@ Be able to:
   assertions, or tests that don't actually test what they claim.
 - Apply the pattern to your own exam project: write a contract test for at
   least one of your interfaces and run it against each implementation.
+- Use `@Nested` to organize a long test class into logical groups.
+- Apply the **layered contract test** pattern: a `@Nested` inner class
+  inside one contract test that extends another (e.g.,
+  `BankTest.ProducedAccounts extends BankAccountTest`) when one interface
+  produces instances of another.
+- Read a `@ParameterizedTest` with `@MethodSource` and explain how it
+  scales testing across multiple implementation combinations.
